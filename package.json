@@ -1,0 +1,32 @@
+{
+  "name": "e669-neo",
+  "version": "1.0.0",
+  "description": "Lightweight browser for e621 and Derpibooru",
+  "main": "www/bundle.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node_modules/.bin/webpack-dev-server --config webpack.config.js --watch-poll",
+    "build": "node_modules/.bin/webpack -p --progress"
+  },
+  "devDependencies": {
+    "copy-webpack-plugin": "^6.0.3",
+    "html-webpack-plugin": "^4.3.0",
+    "pixi.js": "^5.3.0",
+    "ts-loader": "^7.0.5",
+    "typescript": "^3.9.6",
+    "webpack": "^4.43.0",
+    "webpack-cli": "^3.3.12",
+    "webpack-dev-server": "^3.11.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/techniponi/e669-neo.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/techniponi/e669-neo/issues"
+  },
+  "homepage": "https://github.com/techniponi/e669-neo#readme",
+  "dependencies": {}
+}

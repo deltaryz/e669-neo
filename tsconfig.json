@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "outDir": "./www/",
+    "noImplicitAny": true,
+    "module": "es6",
+    "target": "es5",
+    "allowJs": true,
+    "sourceMap": true,
+    "moduleResolution": "node",
+    "resolveJsonModule": true
+  },
+  "include": ["src/**/*", "node_modules/@types"]
+}
