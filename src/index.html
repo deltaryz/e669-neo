@@ -1,10 +1,14 @@
-<meta charset="UTF-8">
 <html>
 
 <head>
     <title>e669</title>
 
     <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- load MUI -->
+    <link href="//cdn.muicss.com/mui-0.10.3/css/mui.min.css" rel="stylesheet" type="text/css" />
+    <script src="//cdn.muicss.com/mui-0.10.3/js/mui.min.js"></script>
 </head>
 <style>
     body {
@@ -14,9 +18,32 @@
 
 <body>
 
-    <b>Test!</b>
-    <br /><br />
-    Test 2!
+    <!-- Header bar -->
+    <div class="mui-appbar" style="font-size: larger;">
+        <table width="100%">
+            <tr style="vertical-align: middle; color: white;">
+
+                <!-- Left side (site dropdown & searchbox) -->
+                <td class="mui--appbar-height">
+                    <button style="visibility: hidden;">
+                        <!-- This just fills up space -->
+                    </button>Test
+                </td>
+
+                <!-- Middle (idk yet) -->
+                <td class="mui--appbar-height" align="middle">
+                    Middle
+                </td>
+
+                <!-- Right (page nav) -->
+                <td class="mui--appbar-height" align="right">
+                    Right Side
+                    <button style="visibility: hidden;">
+                        <!-- This just fills up space -->
+                </td>
+            </tr>
+        </table>
+    </div>
 
 </body>
 
