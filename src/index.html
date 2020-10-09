@@ -15,6 +15,22 @@
         font-family: 'Roboto', sans-serif;
         background-color: #152f56;
     }
+
+    .noselect {
+        -webkit-touch-callout: none;
+        /* iOS Safari */
+        -webkit-user-select: none;
+        /* Safari */
+        -khtml-user-select: none;
+        /* Konqueror HTML */
+        -moz-user-select: none;
+        /* Firefox */
+        -ms-user-select: none;
+        /* Internet Explorer/Edge */
+        user-select: none;
+        /* Non-prefixed version, currently
+                                  supported by Chrome and Opera */
+    }
 </style>
 
 <body>
@@ -26,12 +42,21 @@
 
                 <!-- Left side (site dropdown & searchbox) -->
                 <td class="mui--appbar-height" align="left" style=" filter: drop-shadow(1px 1px 1px black);">
-                    <div class="mui-caret" style=" margin-left: 10px; margin-right: -3px;">
-                    </div>
-                    <img id="websiteDropdown" src="assets/e621-icon.png" height="40px"
-                        style="vertical-align: middle; margin-right: 5px;">
+                    <div class="mui-dropdown noselect" style="cursor: pointer;">
+                        <div data-mui-toggle="dropdown">
+                            <div class="mui-caret" style=" margin-left: 10px; margin-right: -3px;"></div>
+                            <img id="websiteDropdown" src="assets/e621-icon.png" height="40px"
+                                style="vertical-align: middle; margin-right: 5px;">
 
-                    <input type="text" placeholder="Search" style="
+                        </div>
+                        <ul class="mui-dropdown__menu">
+                            <li><a id="selectorE621">e621</a></li>
+                            <li><a id="selectorDerpibooru">Derpibooru</a></li>
+                        </ul>
+
+                    </div>
+
+                    <input id="searchBox" type="text" placeholder="Search" style="
                     vertical-align: middle;
                     padding: 10px;
                     transition: all 0.4s ease-in-out;
@@ -63,7 +88,7 @@
 
     <!-- Main body -->
     <div class="mui-container-fluid">
-        <div class="mui-row image-grid">
+        <div id="imageGrid" class="mui-row image-grid">
             <div class="mui-col-lg-2 mui-col-md-3 mui-col-xs-6">TEST</div>
             <div class="mui-col-lg-2 mui-col-md-3 mui-col-xs-6">TEST</div>
             <div class="mui-col-lg-2 mui-col-md-3 mui-col-xs-6">TEST</div>
