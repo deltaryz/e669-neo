@@ -105,3 +105,4 @@ dist
 
 # output directory
 www/
+.DS_Store
