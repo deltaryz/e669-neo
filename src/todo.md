@@ -22,3 +22,5 @@ grid.imagesLoaded().progress( function() {
 - implement gdpr cookie notice
   - https://medium.com/better-programming/implement-a-cookie-consent-notification-within-5-minutes-82c845c55487
   - https://github.com/osano/cookieconsent
+
+- add auto-convert function for e621 <-> derpi tags
