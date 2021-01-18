@@ -1,0 +1,1 @@
+- use environment variables $DERPI_API_KEY and $E621_API_KEY to avoid exposing keys in git repo
