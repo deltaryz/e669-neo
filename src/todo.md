@@ -17,3 +17,8 @@ grid.imagesLoaded().progress( function() {
 
 - use csswand for animations
 - https://www.csswand.dev
+
+- implement settings page w/ cookie config saving
+- implement gdpr cookie notice
+  - https://medium.com/better-programming/implement-a-cookie-consent-notification-within-5-minutes-82c845c55487
+  - https://github.com/osano/cookieconsent
