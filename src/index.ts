@@ -6,21 +6,27 @@ export enum API {
   DERPIBOORU,
 }
 
+export enum LOCATION {
+  INDEX,
+  SETTINGS,
+}
+
 // global variables
 export let currentApi = API.E621;
-export let currentLocation: string;
+export let currentLocation: LOCATION;
+export let currentQuery = new URLSearchParams(window.location.search); // use currentQuery.get("param")
 
 // TODO: maybe have a different script for settings...? perhaps?
 if (window.location.toString().includes("settings.html")) {
   // we are on settings page
-  currentLocation = "settings";
+  currentLocation = LOCATION.SETTINGS;
 } else if (window.location.toString().includes("index.html")) {
   // we are on index/search page
-  currentLocation = "index";
+  currentLocation = LOCATION.INDEX;
 }
 
 // grab the elements from the webpage
-let searchBox = document.getElementById("searchBox");
+let searchBox = document.getElementById("searchBox"); // TODO: press enter on box to search
 let selectorE621 = document.getElementById("selectorE621");
 let selectorDerpibooru = document.getElementById("selectorDerpibooru");
 let websiteDropdownImg = document.getElementById("websiteDropdown");
@@ -36,3 +42,11 @@ selectorDerpibooru.onclick = function () {
   currentApi = API.DERPIBOORU;
   websiteDropdownImg.setAttribute("src", "assets/derpi-icon.png");
 };
+
+switch (currentLocation) {
+  case LOCATION.SETTINGS:
+    break;
+  case LOCATION.INDEX:
+    // TODO: check URL parameters for search and populate results
+    break;
+}
