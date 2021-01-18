@@ -15,6 +15,8 @@ grid.imagesLoaded().progress(function () {
 });
 ```
 
+- make searchbox enter key work: https://stackoverflow.com/a/155263
+
 - modals: https://www.muicss.com/docs/v1/css-js/overlay
 
 - use either jquery (will benefit masonry kind of) or some other method of including html so we can have header.html and footer.html outside pages

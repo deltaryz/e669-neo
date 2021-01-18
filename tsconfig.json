@@ -7,7 +7,8 @@
     "allowJs": true,
     "sourceMap": true,
     "moduleResolution": "node",
-    "resolveJsonModule": true
+    "resolveJsonModule": true,
+    "allowSyntheticDefaultImports": true
   },
   "include": ["src/**/*", "node_modules/@types"]
 }

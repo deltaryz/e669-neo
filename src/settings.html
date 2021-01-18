@@ -1,101 +1,52 @@
 <html>
-
-<head>
+  <head>
     <title>e669</title>
 
-    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto&display=swap"
+      rel="stylesheet"
+    />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <!-- load MUI -->
-    <link href="//cdn.muicss.com/mui-0.10.3/css/mui.min.css" rel="stylesheet" type="text/css" />
+    <link
+      href="//cdn.muicss.com/mui-0.10.3/css/mui.min.css"
+      rel="stylesheet"
+      type="text/css"
+    />
     <script src="//cdn.muicss.com/mui-0.10.3/js/mui.min.js"></script>
-</head>
-<style>
+  </head>
+  <style>
     body {
-        font-family: 'Roboto', sans-serif;
-        background-color: #152f56;
+      font-family: "Roboto", sans-serif;
+      background-color: #152f56;
     }
 
     .noselect {
-        -webkit-touch-callout: none;
-        /* iOS Safari */
-        -webkit-user-select: none;
-        /* Safari */
-        -khtml-user-select: none;
-        /* Konqueror HTML */
-        -moz-user-select: none;
-        /* Firefox */
-        -ms-user-select: none;
-        /* Internet Explorer/Edge */
-        user-select: none;
-        /* Non-prefixed version, currently
+      -webkit-touch-callout: none;
+      /* iOS Safari */
+      -webkit-user-select: none;
+      /* Safari */
+      -khtml-user-select: none;
+      /* Konqueror HTML */
+      -moz-user-select: none;
+      /* Firefox */
+      -ms-user-select: none;
+      /* Internet Explorer/Edge */
+      user-select: none;
+      /* Non-prefixed version, currently
                                   supported by Chrome and Opera */
     }
-</style>
+  </style>
 
-<body>
-
-    <!-- Header bar -->
-    <div class="mui-appbar" style="font-size: larger; background-color: #284A81;">
-        <table width="100%">
-            <tr style="vertical-align: middle; color: white;">
-
-                <!-- Left side (site dropdown & searchbox) -->
-                <td class="mui--appbar-height" align="left" style=" filter: drop-shadow(1px 1px 1px black);">
-                    <div class="mui-dropdown noselect" style="cursor: pointer;">
-                        <div data-mui-toggle="dropdown">
-                            <div class="mui-caret" style=" margin-left: 10px; margin-right: -3px;"></div>
-                            <img id="websiteDropdown" src="assets/e621-icon.png" height="40px"
-                                style="vertical-align: middle; margin-right: 5px;">
-
-                        </div>
-                        <ul class="mui-dropdown__menu" style="margin-top: 20px;">
-                            <li style="margin-top: 10px; margin-bottom: 10px;"><a id="selectorE621"><img
-                                        src="assets/e621-icon.png"
-                                        style="vertical-align: middle; filter: drop-shadow(1px 1px black);"
-                                        height="25px"> <b>e621</b></a></li>
-                            <li style="margin-bottom: 10px"><a id="selectorDerpibooru"><img src="assets/derpi-icon.png"
-                                        style="vertical-align: middle; filter: drop-shadow(1px 1px black);"
-                                        height="25px"> <b>Derpibooru</b></a></li>
-                        </ul>
-
-                    </div>
-
-                    <input id="searchBox" type="text" placeholder="Search" style="
-                    vertical-align: middle;
-                    padding: 10px;
-                    transition: all 0.4s ease-in-out;
-                    ">
-                    <style>
-                        input:hover {
-                            box-shadow: 1px 1px #1a67a7, 2px 2px #1a67a7, 3px 3px #1a67a7;
-                            transform: translateY(-2px);
-                        }
-                    </style>
-
-                    <!-- Use this color for the searchbox bg: rgb(28, 50, 82)-->
-                </td>
-
-                <!-- Middle (idk yet) -->
-                <td class="mui--appbar-height" align="middle">
-
-                </td>
-
-                <!-- Right (page nav) -->
-                <td class="mui--appbar-height" align="right">
-
-                </td>
-            </tr>
-        </table>
-    </div>
+  <body>
+    <div id="header"></div>
 
     <br /><br />
 
     <!-- Main body -->
     <div class="mui-container-fluid">
-        <!-- TODO: add settings -->
+      <!-- TODO: add settings -->
     </div>
-
-</body>
-
+  </body>
 </html>
