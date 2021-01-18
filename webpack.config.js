@@ -51,6 +51,11 @@ module.exports = {
       filename: "index.html",
       favicon: "src/assets/favicon.ico",
     }),
+    new HTMLWebpackPlugin({
+      template: "src/settings.html",
+      filename: "settings.html",
+      favicon: "src/assets/favicon.ico",
+    }),
   ],
   optimization: ooptimization,
   output: {
