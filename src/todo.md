@@ -15,6 +15,8 @@ grid.imagesLoaded().progress( function() {
 });
 ```
 
+- use either jquery (will benefit masonry kind of) or some other method of including html so we can have header.html and footer.html outside pages
+
 - use csswand for animations
 - https://www.csswand.dev
 
