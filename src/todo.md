@@ -6,12 +6,12 @@
 
 ```js
 // init Masonry
-var grid = document.getElemenById('grid').masonry({
+var grid = document.getElemenById("grid").masonry({
   // options...
 });
 // layout Masonry after each image loads
-grid.imagesLoaded().progress( function() {
-  grid.masonry('layout');
+grid.imagesLoaded().progress(function () {
+  grid.masonry("layout");
 });
 ```
 
@@ -19,11 +19,20 @@ grid.imagesLoaded().progress( function() {
 
 - use either jquery (will benefit masonry kind of) or some other method of including html so we can have header.html and footer.html outside pages
 
+```js
+$(function () {
+  // these will insert into div id="header"/"footer"
+  $("#header").load("header.html");
+  $("#footer").load("footer.html");
+});
+```
+
 - use csswand for animations
 - https://www.csswand.dev
 
 - implement settings page w/ cookie config saving
 - implement gdpr cookie notice
+
   - https://medium.com/better-programming/implement-a-cookie-consent-notification-within-5-minutes-82c845c55487
   - https://github.com/osano/cookieconsent
 

@@ -62,5 +62,6 @@ switch (currentLocation) {
   case LOCATION.INDEX:
     // TODO: check URL parameters for search and populate results
     // TODO: create post.ts object with fields for all relevant variables
+    // use this for type checking: https://jvilk.com/MakeTypes/
     break;
 }

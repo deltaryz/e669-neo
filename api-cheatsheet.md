@@ -37,6 +37,7 @@
   - `id`
   - `height`
   - `width`
+- `total` (# of total results)
 
   `images.length` should correspond to the page size.
   
