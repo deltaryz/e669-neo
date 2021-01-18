@@ -14,3 +14,6 @@ grid.imagesLoaded().progress( function() {
   grid.masonry('layout');
 });
 ```
+
+- use csswand for animations
+- https://www.csswand.dev
