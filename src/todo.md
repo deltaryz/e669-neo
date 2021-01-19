@@ -15,6 +15,13 @@ grid.imagesLoaded().progress(function () {
 });
 ```
 
+## GOOD IDEA!!!
+
+Slideshow queue - quickly and easily add images to a 'now playing queue' that can be viewed in a repeating slideshow
+
+- Let user configure timing, fade style/duration, support images from both e6 and derpi
+- potentially allow users to download a zip of images that existed in this queue
+
 - make searchbox enter key work: https://stackoverflow.com/a/155263
 
 - modals: https://www.muicss.com/docs/v1/css-js/overlay
