@@ -1,8 +1,5 @@
 // e669-neo
-// © 2020 Cameron Seid
-
-// imports
-import $ from "jquery";
+// © 2022 Cameron Seid
 
 export enum API {
   E621,
@@ -23,14 +20,17 @@ let selectorE621: HTMLElement;
 let selectorDerpibooru: HTMLElement;
 let websiteDropdownImg: HTMLElement;
 
-$(document).ready(function () {
-  $("#header").load("assets/header.html", function () {
-    // we have to make sure to write the header's code in here since it loads separately
+// grab header.html and insert to div
+fetch("header.html")
+  .then((data) => data.text()) // parse text
+  .then(function (text) {
+
+    document.getElementById("header").innerHTML = text
 
     // set up our dom elements
-    selectorE621 = $("#selectorE621")[0];
-    selectorDerpibooru = $("#selectorDerpibooru")[0];
-    websiteDropdownImg = $("#websiteDropdown")[0];
+    selectorE621 = document.getElementById("selectorE621");
+    selectorDerpibooru = document.getElementById("selectorDerpibooru");
+    websiteDropdownImg = document.getElementById("websiteDropdown");
 
     // switch to e621 api when clicked
     selectorE621.onclick = function () {
@@ -68,18 +68,18 @@ $(document).ready(function () {
           break;
       }
     }
-  });
 
-  // TODO: maybe have a different script for settings...? perhaps?
-  if (window.location.toString().includes("settings.html")) {
-    // we are on settings page
-    currentLocation = LOCATION.SETTINGS;
-    // keep the image display code out of here so it doesn't mangle the settings page
-  } else {
-    // we are on index/search page
-    currentLocation = LOCATION.INDEX;
-    // TODO: check URL parameters for search and populate results
-    // TODO: create post.ts object with fields for all relevant variables
-    // use this for type checking: https://jvilk.com/MakeTypes/
-  }
-});
+  })
+
+// TODO: maybe have a different script for settings...? perhaps?
+if (window.location.toString().includes("settings.html")) {
+  // we are on settings page
+  currentLocation = LOCATION.SETTINGS;
+  // keep the image display code out of here so it doesn't mangle the settings page
+} else {
+  // we are on index/search page
+  currentLocation = LOCATION.INDEX;
+  // TODO: check URL parameters for search and populate results
+  // TODO: create post.ts object with fields for all relevant variables
+  // use this for type checking: https://jvilk.com/MakeTypes/
+}

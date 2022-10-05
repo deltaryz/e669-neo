@@ -1,25 +1,25 @@
-<html>
-  <head>
-    <title>e669</title>
+<html lang="en">
 
-    <link
-      href="https://fonts.googleapis.com/css2?family=Roboto&display=swap"
-      rel="stylesheet"
-    />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <!-- load MUI -->
-    <link
-      href="https://cdn.muicss.com/mui-0.10.3/css/mui.min.css"
-      rel="stylesheet"
-      type="text/css"
-    />
-    <script src="https://cdn.muicss.com/mui-0.10.3/js/mui.min.js"></script>
-  </head>
+<head>
+  <meta charset="utf-8">
+  <title>e669</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Roboto&amp;display=swap" rel="stylesheet">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- load MUI -->
+  <link href="https://cdn.muicss.com/mui-0.10.3/css/mui.min.css" rel="stylesheet" type="text/css">
+  <script src="https://cdn.muicss.com/mui-0.10.3/js/mui.min.js"></script>
+
   <style>
     body {
       font-family: "Roboto", sans-serif;
       background-color: #152f56;
+    }
+
+    img:hover {
+      transition: all 0.2s ease-in-out;
+      transform: scale(1.1);
     }
 
     .noselect {
@@ -37,25 +37,36 @@
       /* Non-prefixed version, currently
                                   supported by Chrome and Opera */
     }
+
+    .imgpad {
+      outline-color: rgba(0, 0, 0, 0.2);
+      outline-width: 2px;
+      outline-style: solid;
+
+      margin-bottom: 40px;
+    }
   </style>
 
-  <body>
-    <div id="header"></div>
+<body>
+  <!-- Header -->
+  <div id="header"></div>
 
-    <br /><br />
+  <br /><br />
 
-    <!-- Main body -->
-    <div class="mui-container-fluid">
-      <div id="imageGrid" class="mui-row image-grid">
-        <!-- TODO: Generate these programmatically based on page size -->
-        <!-- TODO: alternatively, just add masonry again -->
-        <div class="mui-col-lg-2 mui-col-md-3 mui-col-xs-6">TEST</div>
-        <div class="mui-col-lg-2 mui-col-md-3 mui-col-xs-6">TEST</div>
-        <div class="mui-col-lg-2 mui-col-md-3 mui-col-xs-6">TEST</div>
-        <div class="mui-col-lg-2 mui-col-md-3 mui-col-xs-6">TEST</div>
-        <div class="mui-col-lg-2 mui-col-md-3 mui-col-xs-6">TEST</div>
-        <div class="mui-col-lg-2 mui-col-md-3 mui-col-xs-6">TEST</div>
+  <!-- Main body -->
+  <div class="mui-container-fluid noselect">
+    <div id="imageGrid" class="mui-row image-grid">
+      <!-- TODO: Generate these programmatically based on page size -->
+      <div class="mui-col-lg-2 mui-col-md-3 mui-col-xs-6"><img class="imgpad" width="100%" src="assets/logo.png"></div>
+      <div class="mui-col-lg-2 mui-col-md-3 mui-col-xs-6"><img class="imgpad" width="100%" src="assets/e621-icon.png">
       </div>
+      <div class="mui-col-lg-2 mui-col-md-3 mui-col-xs-6"><img class="imgpad" width="100%" src="assets/derpi-icon.png">
+      </div>
+      <div class="mui-col-lg-2 mui-col-md-3 mui-col-xs-6"><img class="imgpad" width="100%" src="assets/logo.png"></div>
+      <div class="mui-col-lg-2 mui-col-md-3 mui-col-xs-6"><img class="imgpad" width="100%" src="assets/logo.png"></div>
+      <div class="mui-col-lg-2 mui-col-md-3 mui-col-xs-6"><img class="imgpad" width="100%" src="assets/logo.png"></div>
     </div>
-  </body>
+  </div>
+</body>
+
 </html>
