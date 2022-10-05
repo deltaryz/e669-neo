@@ -106,3 +106,5 @@ dist
 # output directory
 www/
 .DS_Store
+.hintrc
+.gitignore
