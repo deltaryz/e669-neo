@@ -1,4 +1,4 @@
-![e669](https://e669.fun/assets/logosmall.png)
+![e669](src/assets/logosmall.png)
 
 # e669
 
