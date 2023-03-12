@@ -7,9 +7,12 @@
   <link href="https://fonts.googleapis.com/css2?family=Roboto&amp;display=swap" rel="stylesheet">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+
   <!-- load MUI -->
+  <!-- doing this with npm is... convoluted and confusing. not bothering with it for MUI -->
   <link href="https://cdn.muicss.com/mui-0.10.3/css/mui.min.css" rel="stylesheet" type="text/css">
-  <script src="https://cdn.muicss.com/mui-0.10.3/js/mui.min.js"></script>
+  <script src="//cdn.muicss.com/mui-0.10.3/js/mui.min.js"></script>
+
 
   <style>
     body {
@@ -20,6 +23,10 @@
     img:hover {
       transition: all 0.2s ease-in-out;
       transform: scale(1.1);
+    }
+
+    .drophover:hover {
+      box-shadow: 5px 5px 5px #00000080;
     }
 
     .noselect {
@@ -38,12 +45,35 @@
                                   supported by Chrome and Opera */
     }
 
+    .container {
+      width: 95%;
+      margin: 0 auto;
+    }
+
+    /* clearfix */
+    .container:after {
+      content: ' ';
+      display: block;
+      clear: both;
+    }
+
+    .gutter-sizer {
+      width: 2%;
+    }
+
+    .grid-sizer {
+      width: 18.4%;
+    }
+
+    .grid-item {
+      float: left;
+      width: 18.4%;
+    }
+
     .imgpad {
       outline-color: rgba(0, 0, 0, 0.2);
       outline-width: 2px;
-      outline-style: solid;
-
-      margin-bottom: 40px;
+      outline-style: solid
     }
   </style>
 
@@ -53,20 +83,27 @@
 
   <br /><br />
 
-  <!-- Main body -->
-  <div class="mui-container-fluid noselect">
-    <div id="imageGrid" class="mui-row image-grid">
-      <!-- TODO: Generate these programmatically based on page size -->
-      <div class="mui-col-lg-2 mui-col-md-3 mui-col-xs-6"><img class="imgpad" width="100%" src="assets/logo.png"></div>
-      <div class="mui-col-lg-2 mui-col-md-3 mui-col-xs-6"><img class="imgpad" width="100%" src="assets/e621-icon.png">
-      </div>
-      <div class="mui-col-lg-2 mui-col-md-3 mui-col-xs-6"><img class="imgpad" width="100%" src="assets/derpi-icon.png">
-      </div>
-      <div class="mui-col-lg-2 mui-col-md-3 mui-col-xs-6"><img class="imgpad" width="100%" src="assets/logo.png"></div>
-      <div class="mui-col-lg-2 mui-col-md-3 mui-col-xs-6"><img class="imgpad" width="100%" src="assets/logo.png"></div>
-      <div class="mui-col-lg-2 mui-col-md-3 mui-col-xs-6"><img class="imgpad" width="100%" src="assets/logo.png"></div>
+  <!-- Main Body -->
+
+  <div class="container">
+    <div class="grid">
+      <div class="gutter-sizer"></div>
+      <div class="grid-sizer"></div>
+      <img class="imgpad drophover grid-item" src="assets/e621-icon.png">
+      <img class="imgpad drophover grid-item" src="assets/tallboi.png">
+      <img class="imgpad drophover grid-item" src="assets/e621-icon.png">
+      <img class="imgpad drophover grid-item" src="assets/derpi-icon.png">
+      <img class="imgpad drophover grid-item" src="assets/logo.png">
+      <img class="imgpad drophover grid-item" src="assets/logo.png">
+      <img class="imgpad drophover grid-item" src="assets/wideboi.png">
+      <img class="imgpad drophover grid-item" src="assets/logo.png">
+      <img class="imgpad drophover grid-item" src="assets/tallboi.png">
+
     </div>
   </div>
+
+  <br /><br />
+
 </body>
 
 </html>

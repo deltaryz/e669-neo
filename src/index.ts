@@ -1,6 +1,9 @@
 // e669-neo
 // © 2022 Cameron Seid
 
+const Packery = require('packery');
+// import * as $ from "jquery";
+
 export enum API {
   E621,
   DERPIBOORU,
@@ -19,6 +22,7 @@ let searchBox: HTMLElement;
 let selectorE621: HTMLElement;
 let selectorDerpibooru: HTMLElement;
 let websiteDropdownImg: HTMLElement;
+
 
 // grab header.html and insert to div
 fetch("header.html")
@@ -79,6 +83,17 @@ if (window.location.toString().includes("settings.html")) {
 } else {
   // we are on index/search page
   currentLocation = LOCATION.INDEX;
+
+  var grid = document.querySelector('.grid');
+  var pckry = new Packery(grid, {
+    itemSelector: '.grid-item',
+    gutter: '.gutter-sizer',
+    columnWidth: '.grid-sizer',
+    percentPosition: true
+  });
+
+  pckry.layout();
+
   // TODO: check URL parameters for search and populate results
   // TODO: create post.ts object with fields for all relevant variables
   // use this for type checking: https://jvilk.com/MakeTypes/
