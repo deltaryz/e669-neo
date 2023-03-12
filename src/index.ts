@@ -2,6 +2,7 @@
 // © 2022 Cameron Seid
 
 const Packery = require('packery');
+const imagesLoaded = require('imagesLoaded');
 // import * as $ from "jquery";
 
 export enum API {
@@ -115,11 +116,15 @@ if (window.location.toString().includes("settings.html")) {
     transitionDuration: '0.1s',
   });
 
+  // layout Packery after each image loads
+  imagesLoaded(grid).on('progress', function () {
+    pckry.layout();
+  });
 
   // make the images larger if we have a mobile-sized window
   if (isMobile()) {
     resizeGrid("32%");
-  pckry.layout();
+    pckry.layout();
   }
 
   // Add an event listener for the resize event
