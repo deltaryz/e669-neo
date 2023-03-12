@@ -129,6 +129,7 @@ if (window.location.toString().includes("settings.html")) {
 
   // Add an event listener for the resize event
   window.addEventListener('resize', function (event) {
+
     if (isMobile()) {
       resizeGrid("32%");
     } else {

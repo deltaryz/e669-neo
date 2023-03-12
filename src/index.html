@@ -21,12 +21,13 @@
     }
 
     img:hover {
-      transition: all 0.2s ease-in-out;
+      transition: all 0.1s ease-in-out;
       transform: scale(1.1);
     }
 
     .drophover:hover {
       box-shadow: 5px 5px 5px #00000080;
+      z-index: 2;
     }
 
     .noselect {
@@ -73,7 +74,8 @@
     .outline {
       outline-color: rgba(0, 0, 0, 0.2);
       outline-width: 2px;
-      outline-style: solid
+      outline-style: solid;
+      z-index: 1;
     }
   </style>
 
