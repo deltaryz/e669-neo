@@ -4,8 +4,6 @@
   <meta charset="utf-8">
   <title>e669</title>
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed&display=swap" rel="stylesheet">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -27,6 +25,11 @@
       z-index: 2;
       transition: all 0.1s ease-in-out;
       transform: scale(1.1);
+    }
+
+    .hoverzoom:hover {
+      transition: all 0.2s ease-in-out;
+      transform: scale(1.25);
     }
 
     .noselect {
@@ -73,7 +76,7 @@
     .grid-item {
       float: left;
       width: 18.4%;
-      box-shadow: 2px 2px 4px #0000003f;
+      box-shadow: 4px 4px 4px #0000003f;
     }
 
     .outline {
@@ -121,6 +124,23 @@
   </div>
 
   <br /><br />
+
+  <!-- Frontpage / Footer -->
+
+  <div style="text-align: center; color: rgba(255, 255, 255, 0.471);">
+    <a href="https://github.com/deltaryz/e669-neo" target="_blank"><img src="assets/logo.png" width="10%"
+        style="filter: drop-shadow(4px 4px 4px rgba(0, 0, 0, 0.3));"></a>
+    <br /><br />
+
+
+    <div style="filter: drop-shadow(2px 2px 1px rgba(0, 0, 0));">
+      e669
+      <br />
+      the alternative browsing interface
+    </div>
+
+    <br />
+  </div>
 
 </body>
 
