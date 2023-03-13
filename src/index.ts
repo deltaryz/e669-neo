@@ -41,16 +41,18 @@ let websiteDropdownImg: HTMLElement;
 
 // keep currentApi variable in sync with URL parameters
 let updateApiFromQuery = function () {
-  switch (currentQuery.get("api").toUpperCase()) {
-    case "DERPIBOORU":
-      currentApi = API.DERPIBOORU;
-      break;
-    case "E621":
-      currentApi = API.E621;
-      break;
-    default:
-      currentApi = API.E621;
-      break;
+  if (currentQuery.has("api")) {
+    switch (currentQuery.get("api").toUpperCase()) {
+      case "DERPIBOORU":
+        currentApi = API.DERPIBOORU;
+        break;
+      case "E621":
+        currentApi = API.E621;
+        break;
+      default:
+        currentApi = API.E621;
+        break;
+    }
   }
 }
 
