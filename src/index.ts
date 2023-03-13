@@ -3,16 +3,13 @@
 
 const Packery = require('packery');
 const imagesLoaded = require('imagesLoaded');
+
+// gonna try not to use this if i can help it
 // import * as $ from "jquery";
 
 export enum API {
   E621,
   DERPIBOORU,
-}
-
-export enum LOCATION {
-  INDEX,
-  SETTINGS,
 }
 
 // check if viewport dimensions are mobile-sized
@@ -36,18 +33,36 @@ let resizeGrid = function (size: string) {
 
 // global variables
 export let currentApi: API;
-export let currentLocation: LOCATION;
 export let currentQuery = new URLSearchParams(window.location.search); // use .get(), .has()
-let searchBox: HTMLElement;
+let searchBox: HTMLInputElement;
 let selectorE621: HTMLElement;
 let selectorDerpibooru: HTMLElement;
 let websiteDropdownImg: HTMLElement;
 
+// keep currentApi variable in sync with URL parameters
+let updateApiFromQuery = function () {
+  switch (currentQuery.get("api").toUpperCase()) {
+    case "DERPIBOORU":
+      currentApi = API.DERPIBOORU;
+      break;
+    case "E621":
+      currentApi = API.E621;
+      break;
+    default:
+      currentApi = API.E621;
+      break;
+  }
+}
+
+updateApiFromQuery();
 
 // grab header.html and insert to div
 fetch("header.html")
   .then((data) => data.text()) // parse text
   .then(function (text) {
+
+    // redunantly run this again because async bullshit 
+    updateApiFromQuery();
 
     document.getElementById("header").innerHTML = text
 
@@ -55,14 +70,24 @@ fetch("header.html")
     selectorE621 = document.getElementById("selectorE621");
     selectorDerpibooru = document.getElementById("selectorDerpibooru");
     websiteDropdownImg = document.getElementById("websiteDropdown");
+    searchBox = document.getElementById("searchBox") as HTMLInputElement;
+
+    switch (currentApi) {
+      case API.DERPIBOORU:
+        websiteDropdownImg.setAttribute("src", "assets/derpi-icon.png");
+        break;
+      case API.E621:
+        websiteDropdownImg.setAttribute("src", "assets/e621-icon.png");
+        break;
+    }
 
     // switch to e621 api when clicked
     selectorE621.onclick = function () {
-      // set dropdown image to e6 icon
-      websiteDropdownImg.setAttribute("src", "assets/e621-icon.png");
-      currentApi = API.E621;
       currentQuery.set("api", "E621");
-      location.href = // TODO: preserve existing searchbox contents/query
+      currentQuery.set("search", searchBox.value)
+
+      // reload page with new parameters
+      location.href =
         window.location.toString().split("?")[0] +
         "?" +
         currentQuery.toString();
@@ -70,77 +95,66 @@ fetch("header.html")
 
     // switch to derpi api when clicked
     selectorDerpibooru.onclick = function () {
-      currentApi = API.DERPIBOORU;
-      // set dropdown image to derpi icon
-      websiteDropdownImg.setAttribute("src", "assets/derpi-icon.png");
       currentQuery.set("api", "derpibooru");
+      currentQuery.set("search", searchBox.value)
+
+      // reload page with new parameters
       location.href =
         window.location.toString().split("?")[0] +
         "?" +
         currentQuery.toString();
     };
 
-    // automatically switch with URL parameter
-    if (currentQuery.has("api")) {
-      switch (currentQuery.get("api").toUpperCase()) {
-        case "DERPIBOORU":
-          currentApi = API.DERPIBOORU;
-          websiteDropdownImg.setAttribute("src", "assets/derpi-icon.png");
-          break;
-        case "E621":
-        default:
-          currentApi = API.E621;
-          websiteDropdownImg.setAttribute("src", "assets/e621-icon.png");
-          break;
-      }
+    // put the search query into the searchbox
+    if (currentQuery.has("search")) {
+      searchBox.value = currentQuery.get("search");
     }
 
   })
 
-// TODO: maybe have a different script for settings...? perhaps?
-if (window.location.toString().includes("settings.html")) {
-  // we are on settings page
-  currentLocation = LOCATION.SETTINGS;
-  // keep the image display code out of here so it doesn't mangle the settings page
-} else {
-  // we are on index/search page
-  currentLocation = LOCATION.INDEX;
+// automatically populate results if there is a search query
+if (currentQuery.has("search")) {
 
-  // this is the Packery grid
-  var grid = document.querySelector('.grid');
-  var pckry = new Packery(grid, {
-    itemSelector: '.grid-item',
-    gutter: '.gutter-sizer',
-    columnWidth: '.grid-sizer',
-    percentPosition: true,
-    transitionDuration: '0.1s',
-  });
+  // this will be an e6 search
+  if (currentApi = API.E621) {
 
-  // layout Packery after each image loads
-  imagesLoaded(grid).on('progress', function () {
-    pckry.layout();
-  });
-
-  // make the images larger if we have a mobile-sized window
-  if (isMobile()) {
-    resizeGrid("32%");
-    pckry.layout();
   }
 
-  // Add an event listener for the resize event
-  window.addEventListener('resize', function (event) {
-
-    if (isMobile()) {
-      resizeGrid("32%");
-    } else {
-      resizeGrid("18.4%");
-    }
-
-    pckry.layout();
-  });
-
-  // TODO: check URL parameters for search and populate results
-  // TODO: create post.ts object with fields for all relevant variables
-  // use this for type checking: https://jvilk.com/MakeTypes/
 }
+
+// initialize the Packery grid
+var grid = document.querySelector('.grid');
+var pckry = new Packery(grid, {
+  itemSelector: '.grid-item',
+  gutter: '.gutter-sizer',
+  columnWidth: '.grid-sizer',
+  percentPosition: true,
+  transitionDuration: '0.1s',
+});
+
+// layout Packery after each image loads
+imagesLoaded(grid).on('progress', function () {
+  pckry.layout();
+});
+
+// make the images larger if we have a mobile-sized window
+if (isMobile()) {
+  resizeGrid("32%");
+  pckry.layout();
+}
+
+// Add an event listener for the resize event
+window.addEventListener('resize', function (event) {
+
+  if (isMobile()) {
+    resizeGrid("32%");
+  } else {
+    resizeGrid("18.4%");
+  }
+
+  pckry.layout();
+});
+
+// TODO: create post.ts object with fields for all relevant variables
+// use this for type checking: https://jvilk.com/MakeTypes/
 
