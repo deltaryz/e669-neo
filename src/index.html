@@ -25,6 +25,7 @@
       z-index: 2;
       transition: all 0.1s ease-in-out;
       transform: scale(1.1);
+      background-color: #0000005d;
     }
 
     .hoverzoom:hover {
@@ -86,6 +87,15 @@
       background-color: #00000027;
       z-index: 1;
     }
+
+    .errorbox {
+      color: white;
+      filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.8));
+    }
+
+    xmp {
+      white-space: pre-wrap;
+    }
   </style>
 
 <body>
@@ -97,6 +107,7 @@
   <!-- Main Body -->
 
   <div class="container">
+    <div id="errorbox" class="errorbox"></div>
     <div class="grid">
       <div class="gutter-sizer"></div>
       <div class="grid-sizer"></div>

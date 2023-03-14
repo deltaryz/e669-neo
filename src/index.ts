@@ -1,6 +1,12 @@
 // e669-neo
 // © 2022 Cameron Seid
 
+// URL of cors proxy (https://github.com/Rob--W/cors-anywhere)
+// PORT=8765 CORSANYWHERE_WHITELIST="http://mba.local:8080,https://e669.fun" node server.js
+// include trailing slash in URL
+const corsProxy = "http://floof.zone:8765/";
+// TODO: add setting to override cors proxy URL
+
 const Packery = require('packery');
 const imagesLoaded = require('imagesLoaded');
 
@@ -15,6 +21,12 @@ export enum API {
 // check if viewport dimensions are mobile-sized
 let isMobile = function () {
   return window.innerWidth < 768;
+}
+
+// show an error in the errorBox
+let showError = function (err: Error) {
+  errorBox.innerHTML +=
+    "<xmp>" + err + "</xmp><br/>";
 }
 
 // resize the grid of images
@@ -35,9 +47,13 @@ let resizeGrid = function (size: string) {
 export let currentApi: API;
 export let currentQuery = new URLSearchParams(window.location.search); // use .get(), .has()
 let searchBox: HTMLInputElement;
+let errorBox = document.getElementById("errorbox");
 let selectorE621: HTMLElement;
 let selectorDerpibooru: HTMLElement;
 let websiteDropdownImg: HTMLElement;
+
+// results
+let resultsE621;
 
 // keep currentApi variable in sync with URL parameters
 let updateApiFromQuery = function () {
@@ -66,6 +82,7 @@ fetch("header.html")
     // redunantly run this again because async bullshit 
     updateApiFromQuery();
 
+    // add header contents to page
     document.getElementById("header").innerHTML = text
 
     // set up our dom elements
@@ -115,10 +132,33 @@ fetch("header.html")
   })
 
 // automatically populate results if there is a search query
-if (currentQuery.has("search")) {
+let search = currentQuery.get("search");
+if (currentQuery.has("search") && search != "") {
+
+  console.log("Search query found: " + search);
 
   // this will be an e6 search
-  if (currentApi = API.E621) {
+  if (currentApi == API.E621) {
+
+    // TODO: use user's API key from settings
+    let url = "https://e621.net/posts.json?tags=" + search + "%20rating:safe"; // TODO: support explicit results
+    console.log("Request URL: " + url);
+
+    // TODO: detect when this finishes so a loading wheel can be displayed
+    // send the request
+    fetch(corsProxy + url)
+      .then(function (response) {
+        console.log(response);
+        return response.json();
+      })
+      .then(function (results) {
+        resultsE621 = results.posts;
+        console.log(resultsE621);
+      })
+      .catch(function (err) {
+        showError(err);
+        throw err;
+      });
 
   }
 
