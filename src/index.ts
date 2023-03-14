@@ -2,13 +2,29 @@
 // © 2022 Cameron Seid
 
 // URL of cors proxy (https://github.com/Rob--W/cors-anywhere)
-// PORT=8765 CORSANYWHERE_WHITELIST="http://mba.local:8080,https://e669.fun" node server.js
+// PORT=8765 CORSANYWHERE_WHITELIST="https://e669.fun" node server.js
 // include trailing slash in URL
 const corsProxy = "http://floof.zone:8765/";
 // TODO: add setting to override cors proxy URL
 
+// TODO: add this to settings panel
+// How big should each page of results be?
+let pageSize = 30;
+
 const Packery = require('packery');
 const imagesLoaded = require('imagesLoaded');
+
+// global variables
+export let currentApi: API;
+export let currentQuery = new URLSearchParams(window.location.search); // use .get(), .has()
+let searchBox: HTMLInputElement;
+let errorBox = document.getElementById("errorbox");
+let selectorE621: HTMLElement;
+let selectorDerpibooru: HTMLElement;
+let websiteDropdownImg: HTMLElement;
+
+// results
+let resultsE621;
 
 // gonna try not to use this if i can help it
 // import * as $ from "jquery";
@@ -16,6 +32,14 @@ const imagesLoaded = require('imagesLoaded');
 export enum API {
   E621,
   DERPIBOORU,
+}
+
+// reload page with new parameters
+let reloadPage = function () {
+  location.href =
+    window.location.toString().split("?")[0] +
+    "?" +
+    currentQuery.toString();
 }
 
 // check if viewport dimensions are mobile-sized
@@ -42,18 +66,6 @@ let resizeGrid = function (size: string) {
     element.style.width = size;
   }
 }
-
-// global variables
-export let currentApi: API;
-export let currentQuery = new URLSearchParams(window.location.search); // use .get(), .has()
-let searchBox: HTMLInputElement;
-let errorBox = document.getElementById("errorbox");
-let selectorE621: HTMLElement;
-let selectorDerpibooru: HTMLElement;
-let websiteDropdownImg: HTMLElement;
-
-// results
-let resultsE621;
 
 // keep currentApi variable in sync with URL parameters
 let updateApiFromQuery = function () {
@@ -91,6 +103,16 @@ fetch("header.html")
     websiteDropdownImg = document.getElementById("websiteDropdown");
     searchBox = document.getElementById("searchBox") as HTMLInputElement;
 
+    // init searchbox
+    searchBox.addEventListener("keydown", function (event) {
+      // enter was pressed
+      if (event.keyCode == 13) {
+        currentQuery.set("search", searchBox.value)
+        reloadPage();
+      }
+    });
+
+    // set the image in the corner to the respective site icon
     switch (currentApi) {
       case API.DERPIBOORU:
         websiteDropdownImg.setAttribute("src", "assets/derpi-icon.png");
@@ -105,11 +127,7 @@ fetch("header.html")
       currentQuery.set("api", "E621");
       currentQuery.set("search", searchBox.value)
 
-      // reload page with new parameters
-      location.href =
-        window.location.toString().split("?")[0] +
-        "?" +
-        currentQuery.toString();
+      reloadPage();
     };
 
     // switch to derpi api when clicked
@@ -117,11 +135,7 @@ fetch("header.html")
       currentQuery.set("api", "derpibooru");
       currentQuery.set("search", searchBox.value)
 
-      // reload page with new parameters
-      location.href =
-        window.location.toString().split("?")[0] +
-        "?" +
-        currentQuery.toString();
+      reloadPage();
     };
 
     // put the search query into the searchbox
@@ -141,19 +155,35 @@ if (currentQuery.has("search") && search != "") {
   if (currentApi == API.E621) {
 
     // TODO: use user's API key from settings
-    let url = "https://e621.net/posts.json?tags=" + search + "%20rating:safe"; // TODO: support explicit results
+    let url = "https://e621.net/posts.json?limit=" + pageSize + "&tags=" + search + "%20rating:safe"; // TODO: support explicit results
     console.log("Request URL: " + url);
 
     // TODO: detect when this finishes so a loading wheel can be displayed
     // send the request
     fetch(corsProxy + url)
       .then(function (response) {
-        console.log(response);
         return response.json();
       })
       .then(function (results) {
         resultsE621 = results.posts;
-        console.log(resultsE621);
+
+        if (resultsE621.length < 1) showError(new Error("No results received."));
+
+        // process results into image tags
+
+        let htmlString: string = "";
+        for (let i = 0; i < resultsE621.length; i++) {
+          let currentImage = resultsE621[i];
+
+          htmlString += "<img class=\"outline drophover grid-item\" src=\"" + currentImage.file.url + "\">"
+        }
+
+        // shove all of that into the grid
+        let imageDiv = document.getElementById("images");
+        imageDiv.innerHTML = htmlString;
+
+        initPackery();
+
       })
       .catch(function (err) {
         showError(err);
@@ -164,38 +194,43 @@ if (currentQuery.has("search") && search != "") {
 
 }
 
-// initialize the Packery grid
-var grid = document.querySelector('.grid');
-var pckry = new Packery(grid, {
-  itemSelector: '.grid-item',
-  gutter: '.gutter-sizer',
-  columnWidth: '.grid-sizer',
-  percentPosition: true,
-  transitionDuration: '0.1s',
-});
+// This is all wrapped in a function so we can initiate it after the images have been retrieved
+let initPackery = function () {
 
-// layout Packery after each image loads
-imagesLoaded(grid).on('progress', function () {
-  pckry.layout();
-});
+  // initialize the Packery grid
+  var grid = document.querySelector('.grid');
+  var pckry = new Packery(grid, {
+    itemSelector: '.grid-item',
+    gutter: '.gutter-sizer',
+    columnWidth: '.grid-sizer',
+    percentPosition: true,
+    transitionDuration: '0.1s',
+  });
 
-// make the images larger if we have a mobile-sized window
-if (isMobile()) {
-  resizeGrid("32%");
-  pckry.layout();
-}
+  // layout Packery after each image loads
+  imagesLoaded(grid).on('progress', function () {
+    pckry.layout();
+  });
 
-// Add an event listener for the resize event
-window.addEventListener('resize', function (event) {
-
+  // make the images larger if we have a mobile-sized window
   if (isMobile()) {
     resizeGrid("32%");
-  } else {
-    resizeGrid("18.4%");
+    pckry.layout();
   }
 
-  pckry.layout();
-});
+  // Add an event listener for the resize event
+  window.addEventListener('resize', function (event) {
+
+    if (isMobile()) {
+      resizeGrid("32%");
+    } else {
+      resizeGrid("18.4%");
+    }
+
+    pckry.layout();
+  });
+
+}
 
 // TODO: create post.ts object with fields for all relevant variables
 // use this for type checking: https://jvilk.com/MakeTypes/
