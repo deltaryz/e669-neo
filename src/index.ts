@@ -4,12 +4,21 @@
 // URL of cors proxy (https://github.com/Rob--W/cors-anywhere)
 // PORT=8765 CORSANYWHERE_WHITELIST="https://e669.fun" node server.js
 // include trailing slash in URL
-const corsProxy = "http://floof.zone:8765/";
+let corsProxy = "http://floof.zone:8765/";
 // TODO: add setting to override cors proxy URL
 
-// TODO: add this to settings panel
+// TODO: add these to settings panel
 // How big should each page of results be?
 let pageSize = 30;
+let gridSizeSmall = "23.4";
+let gridSizeLarge = "49";
+
+// grid size reference
+// value - number of columns
+// 18.4 - 5
+// 23.4 - 4
+// 32 - 3
+// 49 - 2
 
 const Packery = require('packery');
 const imagesLoaded = require('imagesLoaded');
@@ -17,6 +26,13 @@ const imagesLoaded = require('imagesLoaded');
 // global variables
 export let currentApi: API;
 export let currentQuery = new URLSearchParams(window.location.search); // use .get(), .has()
+export let currentPage: number = parseInt(currentQuery.get("page"));
+// default to 1
+if (!currentPage) {
+  currentPage = 1;
+  currentQuery.set("page", currentPage.toString());
+}
+
 let searchBox: HTMLInputElement;
 let errorBox = document.getElementById("errorbox");
 let selectorE621: HTMLElement;
@@ -81,6 +97,9 @@ let updateApiFromQuery = function () {
         currentApi = API.E621;
         break;
     }
+  } else {
+    currentQuery.set("api", "E621");
+    currentApi = API.E621;
   }
 }
 
@@ -155,7 +174,7 @@ if (currentQuery.has("search") && search != "") {
   if (currentApi == API.E621) {
 
     // TODO: use user's API key from settings
-    let url = "https://e621.net/posts.json?limit=" + pageSize + "&tags=" + search + "%20rating:safe"; // TODO: support explicit results
+    let url = "https://e621.net/posts.json?page=" + currentPage + "&limit=" + pageSize + "&tags=" + search + "%20rating:safe"; // TODO: support explicit results
     console.log("Request URL: " + url);
 
     // TODO: detect when this finishes so a loading wheel can be displayed
@@ -213,18 +232,21 @@ let initPackery = function () {
   });
 
   // make the images larger if we have a mobile-sized window
-  if (isMobile()) {
-    resizeGrid("32%");
-    pckry.layout();
+  if (!isMobile()) {
+    resizeGrid(gridSizeSmall + "%");
+  } else {
+    resizeGrid(gridSizeLarge + "%");
   }
+
+  pckry.layout();
 
   // Add an event listener for the resize event
   window.addEventListener('resize', function (event) {
 
     if (isMobile()) {
-      resizeGrid("32%");
+      resizeGrid(gridSizeLarge + "%");
     } else {
-      resizeGrid("18.4%");
+      resizeGrid(gridSizeSmall + "%");
     }
 
     pckry.layout();
