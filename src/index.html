@@ -13,164 +13,63 @@
   <link href="https://cdn.muicss.com/mui-0.10.3/css/mui.min.css" rel="stylesheet" type="text/css">
   <script src="https://cdn.muicss.com/mui-0.10.3/js/mui.min.js"></script>
 
-
-  <style>
-    body {
-      font-family: "Roboto Condensed", sans-serif;
-      /* background-color: #152f56; */
-
-      background: linear-gradient(-45deg, #553694, #103687, #2d63bb);
-      background-size: 150% 150%;
-      animation: gradient 10s ease-in-out infinite;
-    }
-
-    /* TODO: Allow user to disable animation (custom themes?) */
-    @keyframes gradient {
-      0% {
-        background-position: 0% 50%;
-      }
-
-      50% {
-        background-position: 100% 50%;
-      }
-
-      100% {
-        background-position: 0% 50%;
-      }
-    }
-
-    #logo {
-      animation: breathing 5s ease-in-out infinite normal;
-    }
-
-    @keyframes breathing {
-      0% {
-        transform: scale(0.8);
-        filter: drop-shadow(4px 4px 4px rgba(0, 0, 0, 0.3));
-      }
-
-      50% {
-        transform: scale(1);
-        filter: drop-shadow(4px 4px 8px rgba(0, 0, 0, 0.6));
-      }
-
-      100% {
-        transform: scale(0.8);
-        filter: drop-shadow(4px 4px 4px rgba(0, 0, 0, 0.3));
-      }
-    }
-
-
-    .drophover:hover {
-      box-shadow: 5px 5px 6px #00000080;
-      z-index: 2;
-      transition: all 0.15s ease-in-out;
-      transform: scale(1.1);
-      background-color: #00000051;
-    }
-
-    .hoverzoom:hover {
-      transition: all 0.2s ease-in-out;
-      transform: scale(1.25);
-    }
-
-    .noselect {
-      -webkit-touch-callout: none;
-      /* iOS Safari */
-      -webkit-user-select: none;
-      /* Safari */
-      -khtml-user-select: none;
-      /* Konqueror HTML */
-      -moz-user-select: none;
-      /* Firefox */
-      -ms-user-select: none;
-      /* Internet Explorer/Edge */
-      user-select: none;
-      /* Non-prefixed version, currently
-                                  supported by Chrome and Opera */
-    }
-
-    .mui-appbar {
-      box-shadow: 0px 0px 30px #00000050;
-      background-image: linear-gradient(to bottom, rgb(67, 142, 255), rgb(16, 84, 255));
-
-      outline-color: rgba(11, 48, 149, 0.682);
-      outline-width: 3px;
-      outline-style: solid;
-
-      position: fixed;
-      top: 0;
-      width: 100%;
-      z-index: 100;
-    }
-
-    .container {
-      width: 93%;
-      margin: 0 auto;
-    }
-
-    /* clearfix */
-    .container:after {
-      content: ' ';
-      display: block;
-      clear: both;
-    }
-
-    .gutter-sizer {
-      width: 2%;
-    }
-
-    .grid-sizer {
-      width: 18.4%;
-    }
-
-    .grid-item {
-      float: left;
-      width: 18.4%;
-      box-shadow: 4px 4px 4px #0000003f;
-    }
-
-    .outline {
-      outline-color: rgba(0, 0, 0, 0.3);
-      outline-width: 2px;
-      outline-style: solid;
-      background-color: #00000027;
-      z-index: 1;
-    }
-
-    .errorbox {
-      color: white;
-      filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.8));
-    }
-
-    xmp {
-      white-space: pre-wrap;
-      text-align: center;
-    }
-  </style>
+  <link href="index.css" rel="stylesheet" type="text/css">
 
 <body>
   <!-- Header -->
   <div id="header"></div>
 
   <br />
-  <div style="text-align: center; color: rgba(255, 255, 255, 0.146); font-size: x-small;">hi there ;)</div>
-  <br /><br /><br /><br />
+
+  <!-- secret message goes here (secret) -->
+  <div id="hithere" style="text-align: center; color: rgba(255, 255, 255, 0.146); font-size: x-small;"><br /></div>
+
+  <br /><br /><br />
 
   <!-- Main Body -->
 
+  <!-- Main Content Container -->
   <div class="container">
+
+    <!-- Errors will be inserted here for the user to see -->
     <div id="errorbox" class="errorbox"></div>
+
+    <!-- Page Switcher -->
+    <div id="pageSwitcher">
+
+      <div class="left-box">
+        <button name="pagePrevious" class="mui-btn mui-btn--fab mui-btn--small mui-btn--primary">
+          ←
+        </button>
+      </div>
+
+      <div class="center-box" id="pageNumberDisplay"></div>
+
+      <div class="right-box">
+        <button name="pageNext" class="mui-btn mui-btn--fab mui-btn--small mui-btn--primary">
+          →
+        </button>
+      </div>
+
+    </div>
+
+    <br />
+
+    <!-- Image Grid -->
     <div class="grid">
       <div class="gutter-sizer"></div>
       <div class="grid-sizer"></div>
 
-      <!-- TODO: Generate these programmatically -->
-      <div id="images">
-
-      </div>
+      <!-- Images will be dynamically inserted here -->
+      <div id="images"></div>
 
     </div>
+
+    <br />
+
+    <!-- we will automatically copy pageSwitcher down here -->
+    <div id="pageSwitcherBottom"></div>
+
   </div>
 
   <br /><br />
@@ -178,18 +77,16 @@
   <!-- Frontpage / Footer -->
 
   <div style="text-align: center; color: rgba(255, 255, 255, 0.471);">
-    <a href="https://github.com/deltaryz/e669-neo" target="_blank"><img id="logo" src="assets/logo.png" width="10%"
+    <a href="https://github.com/deltaryz/e669-neo" target="_blank"><img id="logo" src="assets/logo.png" width="15%"
         style="filter: drop-shadow(4px 4px 4px rgba(0, 0, 0, 0.3));"></a>
     <br /><br />
 
 
     <div style="filter: drop-shadow(2px 2px 1px rgba(0, 0, 0));">
-      e669
-      <br />
       the alternative browsing interface
     </div>
 
-    <br />
+    <br /><br />
   </div>
 
 </body>

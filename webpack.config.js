@@ -60,6 +60,10 @@ module.exports = {
       template: "src/header.html",
       filename: "header.html",
     }),
+    new HTMLWebpackPlugin({
+      template: "src/index.css",
+      filename: "index.css",
+    }),
   ],
   optimization: ooptimization,
   output: {

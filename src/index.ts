@@ -1,5 +1,5 @@
 // e669-neo
-// © 2022 Cameron Seid
+// © 2023 Cameron Seid
 
 // URL of cors proxy (https://github.com/Rob--W/cors-anywhere)
 // PORT=8765 CORSANYWHERE_WHITELIST="https://e669.fun" node server.js
@@ -10,13 +10,13 @@ let corsProxy = "http://floof.zone:8765/";
 // TODO: add these to settings panel
 // How big should each page of results be?
 let pageSize = 30; // TODO: override this with URL parameter
-let gridSizeSmall = "23.4";
+let gridSizeSmall = "23.5";
 let gridSizeLarge = "49";
 
 // grid size reference
 // value - number of columns
 // 18.4 - 5
-// 23.4 - 4
+// 23.5 - 4
 // 32 - 3
 // 49 - 2
 
@@ -38,6 +38,18 @@ let errorBox = document.getElementById("errorbox");
 let selectorE621: HTMLElement;
 let selectorDerpibooru: HTMLElement;
 let websiteDropdownImg: HTMLElement;
+
+let imageDiv = document.getElementById("images");
+
+let pageSwitcher = document.getElementById("pageSwitcher");
+let pageSwitcherBottom = document.getElementById("pageSwitcherBottom");
+let pageNumberDisplay = document.getElementById("pageNumberDisplay");
+
+// these will be defined later because of how we copy the div
+let pageNext: NodeListOf<HTMLElement>;
+let pagePrevious: NodeListOf<HTMLElement>;
+
+let hithere = document.getElementById("hithere");
 
 // results
 let resultsE621;
@@ -122,6 +134,9 @@ fetch("header.html")
     websiteDropdownImg = document.getElementById("websiteDropdown");
     searchBox = document.getElementById("searchBox") as HTMLInputElement;
 
+    // funny secret message
+    hithere.innerHTML = "hi there ;)";
+
     // init searchbox
     searchBox.addEventListener("keydown", function (event) {
       // enter was pressed
@@ -172,13 +187,20 @@ if (currentQuery.has("search") && search != "") {
 
   // this will be an e6 search
   if (currentApi == API.E621) {
+    // TODO: separate common tasks into functions for easy porting to other APIs
 
     // TODO: use user's API key from settings
-    let url = "https://e621.net/posts.json?page=" + currentPage + "&limit=" + pageSize + "&tags=" + search.replace(/ /g, '%20') + "%20rating:safe"; // TODO: support explicit results
+    let url =
+      "https://e621.net/posts.json?page=" + currentPage
+      + "&limit=" + pageSize
+      + "&tags=" + search.replace(/ /g, '%20')
+      + "%20rating:safe"; // TODO: support explicit results
+
     console.log("Request URL: " + url);
 
     // TODO: detect when this finishes so a loading wheel can be displayed
-    // ^ i think i can just add another .then() ?
+    // display the wheel as soon as we detect a search, hide it once packery is populated
+
     // send the request
     fetch(corsProxy + url)
       .then(function (response) {
@@ -195,11 +217,40 @@ if (currentQuery.has("search") && search != "") {
         for (let i = 0; i < resultsE621.length; i++) {
           let currentImage = resultsE621[i];
 
-          htmlString += "<img class=\"outline drophover grid-item\" src=\"" + currentImage.file.url + "\">"
+          // TODO: handle filetypes that don't show in <img> tags
+          // TODO: user setting to display full res or preview
+          htmlString +=
+            "<img class=\"outline drophover grid-item\" src=\"" + currentImage.file.url + "\">"
         }
 
-        // shove all of that into the grid
-        let imageDiv = document.getElementById("images");
+        // prepare the page switchers
+        pageSwitcher.style.display = "flex";
+        pageSwitcherBottom.style.display = "flex";
+        pageNumberDisplay.innerHTML = currentPage.toString();
+
+        // copy the page switcher below the image grid
+        pageSwitcherBottom.innerHTML = pageSwitcher.innerHTML;
+
+        // gather all of the page switcher buttons
+        pageNext = document.getElementsByName("pageNext");
+        pagePrevious = document.getElementsByName("pagePrevious");
+
+        // make the page buttons work
+        for (let i = 0; i < pageNext.length; i++) {
+          pageNext[i].onclick = function (event) {
+            currentQuery.set("page", (++currentPage).toString());
+            reloadPage();
+          }
+        }
+
+        for (let i = 0; i < pagePrevious.length; i++) {
+          pagePrevious[i].onclick = function (event) {
+            currentQuery.set("page", (--currentPage).toString());
+            reloadPage();
+          }
+        }
+
+        // shove all of the images into the grid
         imageDiv.innerHTML = htmlString;
 
         initPackery();
