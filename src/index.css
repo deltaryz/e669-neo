@@ -1,14 +1,18 @@
+html {
+  background-color: #103687;
+}
+
 body {
   font-family: "Roboto Condensed", sans-serif;
   /* background-color: #152f56; */
 
   background: linear-gradient(-45deg, #543a88, #103687, #2d63bb);
-  background-size: 150% 150%;
-  animation: gradient 10s ease-in-out infinite;
+  background-size: 100% 100%;
+  /* animation: gradient 10s ease-in-out infinite; */
 }
 
-/* TODO: Allow user to disable animation (custom themes?) */
-@keyframes gradient {
+/* TODO: Reconsider background animation */
+/* @keyframes gradient {
   0% {
     background-position: 0% 50%;
   }
@@ -20,7 +24,7 @@ body {
   100% {
     background-position: 0% 50%;
   }
-}
+} */
 
 #logo {
   animation: breathing 5s ease-in-out infinite normal;
@@ -81,7 +85,7 @@ body {
   );
 
   outline-color: rgba(11, 48, 149, 0.682);
-  outline-width: 3px;
+  outline-width: 2px;
   outline-style: solid;
 
   position: fixed;
@@ -145,13 +149,7 @@ xmp {
 
 .left-box,
 .right-box {
-  width: 69px;
-}
-
-.left-box {
-}
-
-.right-box {
+  width: 138px;
 }
 
 .center-box {
