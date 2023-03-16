@@ -19,11 +19,12 @@
       font-family: "Roboto Condensed", sans-serif;
       /* background-color: #152f56; */
 
-      background: linear-gradient(-45deg, #103a87, #482097, #2d3787, #103a87, #152f56);
-      background-size: 400% 400%;
-      animation: gradient 30s ease infinite;
+      background: linear-gradient(-45deg, #553694, #103687, #2d63bb);
+      background-size: 150% 150%;
+      animation: gradient 10s ease-in-out infinite;
     }
 
+    /* TODO: Allow user to disable animation (custom themes?) */
     @keyframes gradient {
       0% {
         background-position: 0% 50%;
@@ -37,6 +38,28 @@
         background-position: 0% 50%;
       }
     }
+
+    #logo {
+      animation: breathing 5s ease-in-out infinite normal;
+    }
+
+    @keyframes breathing {
+      0% {
+        transform: scale(0.8);
+        filter: drop-shadow(4px 4px 4px rgba(0, 0, 0, 0.3));
+      }
+
+      50% {
+        transform: scale(1);
+        filter: drop-shadow(4px 4px 8px rgba(0, 0, 0, 0.6));
+      }
+
+      100% {
+        transform: scale(0.8);
+        filter: drop-shadow(4px 4px 4px rgba(0, 0, 0, 0.3));
+      }
+    }
+
 
     .drophover:hover {
       box-shadow: 5px 5px 6px #00000080;
@@ -68,8 +91,17 @@
     }
 
     .mui-appbar {
-      box-shadow: 0px 5px 20px #00000054;
-      background-image: linear-gradient(to bottom, rgb(67, 142, 255), rgb(0, 115, 255));
+      box-shadow: 0px 0px 30px #00000050;
+      background-image: linear-gradient(to bottom, rgb(67, 142, 255), rgb(16, 84, 255));
+
+      outline-color: rgba(11, 48, 149, 0.682);
+      outline-width: 3px;
+      outline-style: solid;
+
+      position: fixed;
+      top: 0;
+      width: 100%;
+      z-index: 100;
     }
 
     .container {
@@ -121,7 +153,9 @@
   <!-- Header -->
   <div id="header"></div>
 
-  <br /><br />
+  <br />
+  <div style="text-align: center; color: rgba(255, 255, 255, 0.146); font-size: x-small;">hi there ;)</div>
+  <br /><br /><br /><br />
 
   <!-- Main Body -->
 
@@ -144,7 +178,7 @@
   <!-- Frontpage / Footer -->
 
   <div style="text-align: center; color: rgba(255, 255, 255, 0.471);">
-    <a href="https://github.com/deltaryz/e669-neo" target="_blank"><img src="assets/logo.png" width="10%"
+    <a href="https://github.com/deltaryz/e669-neo" target="_blank"><img id="logo" src="assets/logo.png" width="10%"
         style="filter: drop-shadow(4px 4px 4px rgba(0, 0, 0, 0.3));"></a>
     <br /><br />
 

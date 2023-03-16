@@ -9,7 +9,7 @@ let corsProxy = "http://floof.zone:8765/";
 
 // TODO: add these to settings panel
 // How big should each page of results be?
-let pageSize = 30;
+let pageSize = 30; // TODO: override this with URL parameter
 let gridSizeSmall = "23.4";
 let gridSizeLarge = "49";
 
@@ -174,10 +174,11 @@ if (currentQuery.has("search") && search != "") {
   if (currentApi == API.E621) {
 
     // TODO: use user's API key from settings
-    let url = "https://e621.net/posts.json?page=" + currentPage + "&limit=" + pageSize + "&tags=" + search + "%20rating:safe"; // TODO: support explicit results
+    let url = "https://e621.net/posts.json?page=" + currentPage + "&limit=" + pageSize + "&tags=" + search.replace(/ /g, '%20') + "%20rating:safe"; // TODO: support explicit results
     console.log("Request URL: " + url);
 
     // TODO: detect when this finishes so a loading wheel can be displayed
+    // ^ i think i can just add another .then() ?
     // send the request
     fetch(corsProxy + url)
       .then(function (response) {
