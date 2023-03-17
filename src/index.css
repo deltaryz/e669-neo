@@ -174,3 +174,8 @@ xmp {
   padding: 10px 10px 10px 10px;
   box-shadow: 2px 2px 8px #000000;
 }
+
+.settingsInput {
+  font-size: large;
+  width: 100%;
+}

@@ -6,11 +6,16 @@
             <td class="mui--appbar-height" width="20px">
                 <div>
                     <div class="mui-dropdown">
-                        <button data-mui-toggle="dropdown"
-                            style="height: 60px; display: flex; align-items: center; background: transparent; border: none; cursor: pointer;">
+                        <button data-mui-toggle="dropdown" style="height: 60px; 
+                            display: flex; 
+                            align-items: center; 
+                            background: transparent; 
+                            border: none; 
+                            cursor: pointer;">
 
-                            <span class="mui-caret"
-                                style="color: rgba(255, 255, 255, 0.69); margin-right: 5px; filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.4))"></span>
+                            <span class="mui-caret" style="color: rgba(255, 255, 255, 0.69); 
+                                margin-right: 5px; 
+                                filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.4))"></span>
                             <img id="websiteDropdown" src="assets/e621-icon.png" height="80%"
                                 class="mui--align-middle hoverzoom"
                                 style="filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.4));">
@@ -18,26 +23,43 @@
 
                         <ul class="mui-dropdown__menu" style="z-index: 99;">
                             <li id="selectorE621" style="filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.3));">
-                                <a href="#"><b style="color: rgba(0, 0, 0, 0.55)">e621</b></a>
+                                <a href="#">
+                                    <b style="color: rgba(0, 0, 0, 0.55)">
+                                        e621
+                                    </b>
+                                </a>
                             </li>
                             <li id="selectorDerpibooru" style="filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.3));">
                                 <a href=" #">
-                                    <b style="color: rgba(0, 0, 0, 0.55)">Derpibooru</b></a>
+                                    <b style="color: rgba(0, 0, 0, 0.55)">
+                                        Derpibooru
+                                    </b>
+                                </a>
                             </li>
                             <!-- TODO: gear/wrench icon for settings -->
-                            <li id="selectorSettings"><a href="#" style="color: rgba(0, 0, 0, 0.4)">Settings</a></li>
+                            <li id="selectorSettings">
+                                <a href="#" style="color: rgba(0, 0, 0, 0.4)">
+                                    Settings
+                                </a>
+                            </li>
                         </ul>
                     </div>
                 </div>
             </td>
 
-            <td class="mui--appbar-height" style="text-align: center;
+            <td class="mui--appbar-height" style="
+                text-align: center;
                 font-size: smaller;
                 letter-spacing: -1px;
                 color: rgba(0, 0, 0, 0.5);
-                filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.3));" width="110px">
-                made with 💜 by <b><a style="color: rgba(95, 16, 186, 0.52);" href="https://deltaryz.com"
-                        target="_blank">deltaryz</a></b>
+                filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.3));
+                " width="110px">
+                made with 💜 by
+                <b>
+                    <a style="color: rgba(95, 16, 186, 0.52);" href="https://deltaryz.com" target="_blank">
+                        deltaryz
+                    </a>
+                </b>
             </td>
 
             <!-- search -->
@@ -49,17 +71,32 @@
                         padding-left: 5px;
                         padding-right: 5px;
                         ">
-                    <label style="letter-spacing: 4px; font-weight: bolder; color: rgba(0, 0, 0, 0.15);">search</label>
+                    <label style="letter-spacing: 4px; 
+                    font-weight: bolder; 
+                    color: rgba(0, 0, 0, 0.15);">search</label>
                 </div>
             </td>
         </tr>
     </table>
 </div>
 
-<div id="settingsModal" hidden>
-    test<br />
-    test<br />
-    test<br />
-    test<br />
-    test<br />
+<div id="settingsModal" style="
+position: relative;
+" hidden>
+
+    Test Setting:
+    <br />
+    <input id="testSettingInput" class="settingsInput">
+
+    <br />
+
+    <button id="saveSettings" style="
+    position: absolute;
+    bottom: 10px;
+    height: 30px;
+    width: 94%;
+    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.483);
+    ">
+        Save
+    </button>
 </div>

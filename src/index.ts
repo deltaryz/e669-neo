@@ -24,6 +24,17 @@ const Packery = require('packery');
 const imagesLoaded = require('imagesLoaded');
 const overlay = require('muicss/lib/js/overlay');
 
+// Reads a cookie from the browser
+let readCookie = function (key: string): string {
+  return document.cookie.substring(document.cookie.indexOf(key) + key.length + 1).split(";")[0];
+}
+
+// TODO: GDPR notice about this
+// Writes a cookie to the browser
+let writeCookie = function (key: string, value: string) {
+  document.cookie = key + "=" + value + "; expires=Fri, 31 Dec 9999 23:59:59 GMT; path=/";
+}
+
 // global variables
 export let currentApi: API;
 export let currentQuery = new URLSearchParams(window.location.search); // use .get(), .has()
@@ -179,8 +190,38 @@ fetch("header.html")
 
     // show settings modal when we click this
     selectorSettings.onclick = function () {
-      settingsModal.hidden = false;
-      overlay('on', settingsModal);
+
+      // clone the settings modal to a temporary copy
+      // we have to do this because mui deletes it when we close the modal
+      let settingsActive = settingsModal.cloneNode(true) as HTMLElement;
+      document.body.appendChild(settingsActive);
+      settingsActive.hidden = false;
+
+      // grab the fields from the copy
+      let testSettingInput = settingsActive.querySelector("#testSettingInput") as HTMLInputElement;
+      let saveSettingsButton = settingsActive.querySelector("#saveSettings") as HTMLButtonElement;
+
+      // populate the inputs with the existing settings
+      testSettingInput.value = readCookie("testSetting");
+      console.log("Read testSetting with value: " + readCookie("testSetting"));
+
+      // do this when we close the settings
+      let closeSettings = function () {
+        // testSetting
+        console.log("Saving testSetting with value: " + testSettingInput.value);
+        writeCookie("testSetting", testSettingInput.value);
+
+        // this will only be necessary for certain changes
+        // reloadPage()
+      }
+
+      // overlay('off') will call closeSettings()
+      saveSettingsButton.onclick = function () { overlay('off'); };
+
+      // show the modal
+      overlay('on', {
+        'onclose': closeSettings,
+      }, settingsActive);
     }
 
     // put the search query into the searchbox
