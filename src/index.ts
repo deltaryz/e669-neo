@@ -22,6 +22,7 @@ let gridSizeLarge = "49";
 
 const Packery = require('packery');
 const imagesLoaded = require('imagesLoaded');
+const overlay = require('muicss/lib/js/overlay');
 
 // global variables
 export let currentApi: API;
@@ -37,7 +38,9 @@ let searchBox: HTMLInputElement;
 let errorBox = document.getElementById("errorbox");
 let selectorE621: HTMLElement;
 let selectorDerpibooru: HTMLElement;
+let selectorSettings: HTMLElement;
 let websiteDropdownImg: HTMLElement;
+let settingsModal: HTMLElement;
 
 let imageDiv = document.getElementById("images");
 
@@ -131,8 +134,10 @@ fetch("header.html")
     // set up our dom elements
     selectorE621 = document.getElementById("selectorE621");
     selectorDerpibooru = document.getElementById("selectorDerpibooru");
+    selectorSettings = document.getElementById("selectorSettings");
     websiteDropdownImg = document.getElementById("websiteDropdown");
     searchBox = document.getElementById("searchBox") as HTMLInputElement;
+    settingsModal = document.getElementById("settingsModal");
 
     // funny secret message
     hithere.innerHTML = "hi there ;)";
@@ -171,6 +176,12 @@ fetch("header.html")
 
       reloadPage();
     };
+
+    // show settings modal when we click this
+    selectorSettings.onclick = function () {
+      settingsModal.hidden = false;
+      overlay('on', settingsModal);
+    }
 
     // put the search query into the searchbox
     if (currentQuery.has("search")) {
@@ -289,8 +300,6 @@ let initPackery = function () {
   } else {
     resizeGrid(gridSizeLarge + "%");
   }
-
-  pckry.layout();
 
   // Add an event listener for the resize event
   window.addEventListener('resize', function (event) {

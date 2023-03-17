@@ -11,11 +11,13 @@
   "devDependencies": {
     "@types/imagesloaded": "^4.1.2",
     "@types/jquery": "^3.5.16",
+    "@types/muicss": "^0.9.4",
     "@types/packery": "^1.4.32",
     "copy-webpack-plugin": "^6.0.3",
     "html-webpack-plugin": "^4.3.0",
     "imagesloaded": "^5.0.0",
     "jquery": "^3.6.4",
+    "muicss": "^0.10.3",
     "packery": "^2.1.2",
     "ts-loader": "^7.0.5",
     "typescript": "^3.9.6",

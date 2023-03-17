@@ -7,7 +7,7 @@ body {
   /* background-color: #152f56; */
 
   background: linear-gradient(-45deg, #543a88, #103687, #2d63bb);
-  background-size: 100% 100%;
+  /* background-size: 150% 150%; */
   /* animation: gradient 10s ease-in-out infinite; */
 }
 
@@ -163,4 +163,14 @@ xmp {
 
 .mui-btn {
   filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.4));
+  background: linear-gradient(-45deg, #103687, #2d79bb);
+}
+
+#settingsModal {
+  width: 70%;
+  height: 400px;
+  margin: 100px auto;
+  background: linear-gradient(-45deg, #565fc7, #92dbff);
+  padding: 10px 10px 10px 10px;
+  box-shadow: 2px 2px 8px #000000;
 }
