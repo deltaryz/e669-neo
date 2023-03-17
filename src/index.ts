@@ -200,16 +200,28 @@ fetch("header.html")
       // grab the fields from the copy
       let testSettingInput = settingsActive.querySelector("#testSettingInput") as HTMLInputElement;
       let saveSettingsButton = settingsActive.querySelector("#saveSettings") as HTMLButtonElement;
+      let ageRestrictSettingInput = settingsActive.querySelector("#ageRestrictSettingInput") as HTMLInputElement;
 
       // populate the inputs with the existing settings
       testSettingInput.value = readCookie("testSetting");
       console.log("Read testSetting with value: " + readCookie("testSetting"));
+
+      let ageRestrictSetting = false;
+      if (readCookie("disableAgeRestrict") === 'true') {
+        ageRestrictSetting = true;
+      }
+      console.log("Read disableAgeRestrict with value: " + ageRestrictSetting)
+      ageRestrictSettingInput.checked = ageRestrictSetting;
 
       // do this when we close the settings
       let closeSettings = function () {
         // testSetting
         console.log("Saving testSetting with value: " + testSettingInput.value);
         writeCookie("testSetting", testSettingInput.value);
+
+        // disableAgeRestrict
+        console.log("Saving disableAgeRestrict with value: " + ageRestrictSettingInput.checked);
+        writeCookie("disableAgeRestrict", ageRestrictSettingInput.checked.toString());
 
         // this will only be necessary for certain changes
         // reloadPage()
@@ -246,7 +258,12 @@ if (currentQuery.has("search") && search != "") {
       "https://e621.net/posts.json?page=" + currentPage
       + "&limit=" + pageSize
       + "&tags=" + search.replace(/ /g, '%20')
-      + "%20rating:safe"; // TODO: support explicit results
+
+    // add the rating:safe tag if the user hasn't allowed 18+ results
+    if (!(readCookie("disableAgeRestrict") === 'true')) {
+      console.log("User has not enabled 18+ content. Adding safe tag...");
+      url += "%20rating:safe";
+    }
 
     console.log("Request URL: " + url);
 

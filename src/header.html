@@ -30,7 +30,7 @@
                                 </a>
                             </li>
                             <li id="selectorDerpibooru" style="filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.3));">
-                                <a href=" #">
+                                <a href="#">
                                     <b style="color: rgba(0, 0, 0, 0.55)">
                                         Derpibooru
                                     </b>
@@ -88,15 +88,26 @@ position: relative;
     <br />
     <input id="testSettingInput" class="settingsInput">
 
+    <br /><br />
+
+    <input type="checkbox" id="ageRestrictSettingInput">
+    <label for="ageRestrict">Allow 18+ Results</label>
+
     <br />
 
-    <button id="saveSettings" style="
-    position: absolute;
-    bottom: 10px;
-    height: 30px;
-    width: 94%;
-    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.483);
+    <div style="
+    display: flex;
+    justify-content: center;
+    align-items: center;
     ">
-        Save
-    </button>
+        <button id="saveSettings" style="
+        position: absolute;
+        bottom: 10px;
+        height: 30px;
+        width: 95%;
+        box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.483);
+        ">
+            Save
+        </button>
+    </div>
 </div>
