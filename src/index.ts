@@ -38,7 +38,7 @@ let writeCookie = function (key: string, value: string) {
 // global variables
 export let currentApi: API;
 export let currentQuery = new URLSearchParams(window.location.search); // use .get(), .has()
-export let currentPage: number = parseInt(currentQuery.get("page"));
+export let currentPage: number = parseInt(currentQuery.get("page") as string);
 // default to 1
 if (!currentPage) {
   currentPage = 1;
@@ -46,24 +46,24 @@ if (!currentPage) {
 }
 
 let searchBox: HTMLInputElement;
-let errorBox = document.getElementById("errorbox");
+let errorBox: HTMLElement = document.getElementById("errorbox") as HTMLElement;
 let selectorE621: HTMLElement;
 let selectorDerpibooru: HTMLElement;
 let selectorSettings: HTMLElement;
 let websiteDropdownImg: HTMLElement;
 let settingsModal: HTMLElement;
 
-let imageDiv = document.getElementById("images");
+let imageDiv: HTMLElement = document.getElementById("images") as HTMLElement;
 
-let pageSwitcher = document.getElementById("pageSwitcher");
-let pageSwitcherBottom = document.getElementById("pageSwitcherBottom");
-let pageNumberDisplay = document.getElementById("pageNumberDisplay");
+let pageSwitcher: HTMLElement = document.getElementById("pageSwitcher") as HTMLElement;
+let pageSwitcherBottom: HTMLElement = document.getElementById("pageSwitcherBottom") as HTMLElement;
+let pageNumberDisplay: HTMLElement = document.getElementById("pageNumberDisplay") as HTMLElement;
 
 // these will be defined later because of how we copy the div
 let pageNext: NodeListOf<HTMLElement>;
 let pagePrevious: NodeListOf<HTMLElement>;
 
-let hithere = document.getElementById("hithere");
+let hithere: HTMLElement = document.getElementById("hithere") as HTMLElement;
 
 // results
 let resultsE621;
@@ -112,7 +112,8 @@ let resizeGrid = function (size: string) {
 // keep currentApi variable in sync with URL parameters
 let updateApiFromQuery = function () {
   if (currentQuery.has("api")) {
-    switch (currentQuery.get("api").toUpperCase()) {
+    let currentQueryString: string = currentQuery.get("api") as string;
+    switch (currentQueryString.toUpperCase()) {
       case "DERPIBOORU":
         currentApi = API.DERPIBOORU;
         break;
@@ -140,15 +141,16 @@ fetch("header.html")
     updateApiFromQuery();
 
     // add header contents to page
-    document.getElementById("header").innerHTML = text
+    let header: HTMLElement = document.getElementById("header") as HTMLElement;
+    header.innerHTML = text
 
     // set up our dom elements
-    selectorE621 = document.getElementById("selectorE621");
-    selectorDerpibooru = document.getElementById("selectorDerpibooru");
-    selectorSettings = document.getElementById("selectorSettings");
-    websiteDropdownImg = document.getElementById("websiteDropdown");
+    selectorE621 = document.getElementById("selectorE621") as HTMLElement;
+    selectorDerpibooru = document.getElementById("selectorDerpibooru") as HTMLElement;
+    selectorSettings = document.getElementById("selectorSettings") as HTMLElement;
+    websiteDropdownImg = document.getElementById("websiteDropdown") as HTMLElement;
     searchBox = document.getElementById("searchBox") as HTMLInputElement;
-    settingsModal = document.getElementById("settingsModal");
+    settingsModal = document.getElementById("settingsModal") as HTMLElement;
 
     // funny secret message
     hithere.innerHTML = "hi there ;)";
@@ -245,13 +247,13 @@ fetch("header.html")
 
     // put the search query into the searchbox
     if (currentQuery.has("search")) {
-      searchBox.value = currentQuery.get("search");
+      searchBox.value = currentQuery.get("search") as string;
     }
 
   })
 
 // automatically populate results if there is a search query
-let search = currentQuery.get("search");
+let search = currentQuery.get("search") as string;
 if (currentQuery.has("search") && search != "") {
 
   console.log("Search query found: " + search);

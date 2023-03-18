@@ -8,7 +8,7 @@ let isProd = false;
 
 // relevant for later
 if (mode == "production") {
-  let isProd = true;
+  isProd = true;
 }
 
 let ooptimization;
