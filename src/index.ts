@@ -198,13 +198,16 @@ fetch("header.html")
       settingsActive.hidden = false;
 
       // grab the fields from the copy
-      let testSettingInput = settingsActive.querySelector("#testSettingInput") as HTMLInputElement;
+      let resultsPerPageInput = settingsActive.querySelector("#resultsPerPageInput") as HTMLInputElement;
       let saveSettingsButton = settingsActive.querySelector("#saveSettings") as HTMLButtonElement;
       let ageRestrictSettingInput = settingsActive.querySelector("#ageRestrictSettingInput") as HTMLInputElement;
 
       // populate the inputs with the existing settings
-      testSettingInput.value = readCookie("testSetting");
-      console.log("Read testSetting with value: " + readCookie("testSetting"));
+      // TODO: move this outside globally so we can figure this out on load
+      let resultsPerPageValue = parseInt(readCookie("resultsPerPage"));
+      console.log("Read resultsPerPage with value: " + resultsPerPageValue);
+      if (!resultsPerPageValue) resultsPerPageValue = 30;
+      resultsPerPageInput.value = resultsPerPageValue.toString();
 
       let ageRestrictSetting = false;
       if (readCookie("disableAgeRestrict") === 'true') {
@@ -216,8 +219,12 @@ fetch("header.html")
       // do this when we close the settings
       let closeSettings = function () {
         // testSetting
-        console.log("Saving testSetting with value: " + testSettingInput.value);
-        writeCookie("testSetting", testSettingInput.value);
+        resultsPerPageValue = parseInt(resultsPerPageInput.value);
+        if (resultsPerPageValue < 0) resultsPerPageValue = 0;
+        if (resultsPerPageValue > 320) resultsPerPageValue = 320; // this is e621's upper limit
+        // TODO: check this against derpi's limit
+        console.log("Saving resultsPerPage with value: " + resultsPerPageValue);
+        writeCookie("resultsPerPage", resultsPerPageValue.toString());
 
         // disableAgeRestrict
         console.log("Saving disableAgeRestrict with value: " + ageRestrictSettingInput.checked);

@@ -84,14 +84,67 @@
 position: relative;
 " hidden>
 
-    Test Setting:
+    Results per page:
     <br />
-    <input id="testSettingInput" class="settingsInput">
+    <input type="number" id="resultsPerPageInput" class="settingsInput">
+    <br />
+    <div style="font-size: smaller; color: rgba(0, 0, 0, 0.576); padding-top: 3px;">
+        override with URL variable: <tt><b>pageSize=#</b></tt>
+    </div>
+    <!-- TODO: temporary override with pageSize URL variable -->
 
-    <br /><br />
+    <br />
 
-    <input type="checkbox" id="ageRestrictSettingInput">
-    <label for="ageRestrict">Allow 18+ Results</label>
+    <div class="settingsTable" style="display:grid; grid-template-columns: auto auto;">
+
+        <div class="settingsCell">
+            Columns (large display):
+            <br />
+            <span class="px"><input type="radio"> 5</span>
+            <span class="px"><input type="radio"> 4</span>
+            <span class="px"><input type="radio"> 3</span>
+            <br />
+
+            <br />
+            Columns (small display):
+            <br />
+            <span class="px"><input type="radio"> 3</span>
+            <span class="px"><input type="radio"> 2</span>
+            <span class="px"><input type="radio"> 1</span>
+            <br />
+        </div>
+
+        <div class="settingsCell" style="padding-top: 2px;">
+            <div style="color: rgb(158, 0, 0)">
+                <input type="checkbox" id="ageRestrictSettingInput">
+                18+ Results
+            </div>
+
+            <br />
+
+            Preview Size:
+            <br />
+            <input type="radio" id="imageFullSetting" name="imageSize"> Full
+            <br />
+            <input type="radio" id="imageSampleSetting" name="imageSize"> Sample
+        </div>
+
+    </div>
+
+    <br />
+    Derpibooru API Key:
+    <br />
+    <input id="derpiApiKeyInput" class="settingsInput">
+
+    <div style="padding-top: 3px;"></div>
+
+    CORS Proxy URL:
+    <br />
+    <input id="corsProxyInput" class="settingsInput">
+    <div style="font-size: smaller; color: rgba(0, 0, 0, 0.576); padding-top: 3px;">
+        Powered by <a href="https://github.com/Rob--W/cors-anywhere"
+            style="color:rgba(67, 0, 144, 0.52)">cors-anywhere</a>
+    </div>
 
     <br />
 
@@ -104,7 +157,7 @@ position: relative;
         position: absolute;
         bottom: 10px;
         height: 30px;
-        width: 95%;
+        width: 97%;
         box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.483);
         ">
             Save
