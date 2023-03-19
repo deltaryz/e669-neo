@@ -86,7 +86,7 @@ position: relative;
 
     Results per page:
     <br />
-    <input type="number" id="resultsPerPageInput" class="settingsInput">
+    <input type="number" id="pageSizeInput" class="settingsInput" min="0" max="320">
     <br />
     <div style="font-size: smaller; color: rgba(0, 0, 0, 0.576); padding-top: 3px;">
         override with URL variable: <tt><b>pageSize=#</b></tt>
@@ -100,21 +100,21 @@ position: relative;
         <div class="settingsCell">
             Columns (large display):
             <br />
-            <span class="px"><input type="radio"> 5</span>
-            <span class="px"><input type="radio"> 4</span>
-            <span class="px"><input type="radio"> 3</span>
+            <span class="px"><input type="radio" name="largeDisplayColumns"> 5</span>
+            <span class="px"><input type="radio" name="largeDisplayColumns"> 4</span>
+            <span class="px"><input type="radio" name="largeDisplayColumns"> 3</span>
             <br />
 
             <br />
             Columns (small display):
             <br />
-            <span class="px"><input type="radio"> 3</span>
-            <span class="px"><input type="radio"> 2</span>
-            <span class="px"><input type="radio"> 1</span>
+            <span class="px"><input type="radio" name="smallDisplayColumns"> 3</span>
+            <span class="px"><input type="radio" name="smallDisplayColumns"> 2</span>
+            <span class="px"><input type="radio" name="smallDisplayColumns"> 1</span>
             <br />
         </div>
 
-        <div class="settingsCell" style="padding-top: 2px;">
+        <div class="settingsCell" style="padding-top: 1px;">
             <div style="color: rgb(158, 0, 0)">
                 <input type="checkbox" id="ageRestrictSettingInput">
                 18+ Results

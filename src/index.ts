@@ -7,26 +7,19 @@
 let corsProxy = "http://floof.zone:8765/";
 // TODO: add setting to override cors proxy URL
 
-// TODO: add these to settings panel
-// How big should each page of results be?
-let pageSize = 30; // TODO: override this with URL parameter
-let gridSizeSmall = "23.5";
-let gridSizeLarge = "49";
-
-// grid size reference
-// value - number of columns
-// 18.4 - 5
-// 23.5 - 4
-// 32 - 3
-// 49 - 2
-
-const Packery = require('packery');
-const imagesLoaded = require('imagesLoaded');
-const overlay = require('muicss/lib/js/overlay');
-
 // Reads a cookie from the browser
-let readCookie = function (key: string): string {
-  return document.cookie.substring(document.cookie.indexOf(key) + key.length + 1).split(";")[0];
+let readCookie = function (key: string): string | null {
+
+  if (
+    document.cookie.split(";").some((item) => item.trim().startsWith(key + "="))
+  ) {
+    // cookie exists, return text
+    return document.cookie.substring(document.cookie.indexOf(key) + key.length + 1).split(";")[0];
+  } else {
+    // cookie does not exist, return null
+    return null
+  }
+
 }
 
 // TODO: GDPR notice about this
@@ -35,15 +28,42 @@ let writeCookie = function (key: string, value: string) {
   document.cookie = key + "=" + value + "; expires=Fri, 31 Dec 9999 23:59:59 GMT; path=/";
 }
 
-// global variables
-export let currentApi: API;
-export let currentQuery = new URLSearchParams(window.location.search); // use .get(), .has()
-export let currentPage: number = parseInt(currentQuery.get("page") as string);
-// default to 1
-if (!currentPage) {
-  currentPage = 1;
-  currentQuery.set("page", currentPage.toString());
+// init user settings, reading from cookies if they exist
+let userSettings = new Map<string, string>([
+  ["pageSize", readCookie('pageSize') || "30"],
+  ["gridSizeSmall", readCookie('gridSizeSmall') || "23.5"],
+  ["gridSizeLarge", readCookie('gridSizeLarge') || "49"],
+  ["disableAgeRestrict", readCookie('disableAgeRestrict') || "false"],
+]);
+
+console.log(userSettings);
+
+// for each value in userSettings, write a cookie
+let writeSettingsToCookies = function () {
+  console.log("Writing settings to cookies", userSettings);
+  userSettings.forEach(function (value, key, map) {
+    writeCookie(key, value);
+  })
 }
+
+// Maps the number of columns to the grid size value necessary to achieve it
+let gridSizeReference = new Map<number, string>([
+  [2, "49"],
+  [3, "32"],
+  [4, "23.5"],
+  [5, "18.4"],
+]);
+
+const Packery = require('packery');
+const imagesLoaded = require('imagesLoaded');
+const overlay = require('muicss/lib/js/overlay');
+
+// global variables
+// i have no fucking idea why but if i try to remove the 'export' on this,
+// imagesLoaded fails to load. 
+export let currentQuery = new URLSearchParams(window.location.search); // use .get(), .has()
+let currentPage: number = parseInt(currentQuery.get("page") || "1"); // default to 1
+currentQuery.set("page", currentPage.toString());
 
 let searchBox: HTMLInputElement;
 let errorBox: HTMLElement = document.getElementById("errorbox") as HTMLElement;
@@ -71,10 +91,12 @@ let resultsE621;
 // gonna try not to use this if i can help it
 // import * as $ from "jquery";
 
-export enum API {
+enum API {
   E621,
   DERPIBOORU,
 }
+
+let currentApi: API = API.E621;
 
 // reload page with new parameters
 let reloadPage = function () {
@@ -200,40 +222,37 @@ fetch("header.html")
       settingsActive.hidden = false;
 
       // grab the fields from the copy
-      let resultsPerPageInput = settingsActive.querySelector("#resultsPerPageInput") as HTMLInputElement;
+      let pageSizeInput = settingsActive.querySelector("#pageSizeInput") as HTMLInputElement;
       let saveSettingsButton = settingsActive.querySelector("#saveSettings") as HTMLButtonElement;
       let ageRestrictSettingInput = settingsActive.querySelector("#ageRestrictSettingInput") as HTMLInputElement;
 
       // populate the inputs with the existing settings
-      // TODO: move this outside globally so we can figure this out on load
-      let resultsPerPageValue = parseInt(readCookie("resultsPerPage"));
-      console.log("Read resultsPerPage with value: " + resultsPerPageValue);
-      if (!resultsPerPageValue) resultsPerPageValue = 30;
-      resultsPerPageInput.value = resultsPerPageValue.toString();
+      pageSizeInput.value = userSettings.get("pageSize") || "30";
 
       let ageRestrictSetting = false;
-      if (readCookie("disableAgeRestrict") === 'true') {
+      if (userSettings.get("disableAgeRestrict") === 'true') {
         ageRestrictSetting = true;
       }
-      console.log("Read disableAgeRestrict with value: " + ageRestrictSetting)
+
       ageRestrictSettingInput.checked = ageRestrictSetting;
 
       // do this when we close the settings
       let closeSettings = function () {
-        // testSetting
-        resultsPerPageValue = parseInt(resultsPerPageInput.value);
-        if (resultsPerPageValue < 0) resultsPerPageValue = 0;
-        if (resultsPerPageValue > 320) resultsPerPageValue = 320; // this is e621's upper limit
+
+        // check pageSize and make sure it's within a valid range
+        let pageSizeValue = parseInt(pageSizeInput.value);
+        if (pageSizeValue < 0) pageSizeValue = 0;
+        if (pageSizeValue > 320) pageSizeValue = 320; // this is e621's upper limit
+        // TODO: check this while doing the search
         // TODO: check this against derpi's limit
-        console.log("Saving resultsPerPage with value: " + resultsPerPageValue);
-        writeCookie("resultsPerPage", resultsPerPageValue.toString());
 
-        // disableAgeRestrict
-        console.log("Saving disableAgeRestrict with value: " + ageRestrictSettingInput.checked);
-        writeCookie("disableAgeRestrict", ageRestrictSettingInput.checked.toString());
+        // update settings object
+        userSettings.set("pageSize", pageSizeValue.toString());
+        userSettings.set("disableAgeRestrict", ageRestrictSettingInput.checked.toString());
 
-        // this will only be necessary for certain changes
-        // reloadPage()
+        // write these into the cookies
+        writeSettingsToCookies();
+
       }
 
       // overlay('off') will call closeSettings()
@@ -253,8 +272,8 @@ fetch("header.html")
   })
 
 // automatically populate results if there is a search query
-let search = currentQuery.get("search") as string;
-if (currentQuery.has("search") && search != "") {
+let search: string = currentQuery.get("search") || "";
+if (search != "") {
 
   console.log("Search query found: " + search);
 
@@ -265,11 +284,11 @@ if (currentQuery.has("search") && search != "") {
     // TODO: use user's API key from settings
     let url =
       "https://e621.net/posts.json?page=" + currentPage
-      + "&limit=" + pageSize
+      + "&limit=" + userSettings.get("pageSize")
       + "&tags=" + search.replace(/ /g, '%20')
 
     // add the rating:safe tag if the user hasn't allowed 18+ results
-    if (!(readCookie("disableAgeRestrict") === 'true')) {
+    if (!(userSettings.get("disableAgeRestrict") === 'true')) {
       console.log("User has not enabled 18+ content. Adding safe tag...");
       url += "%20rating:safe";
     }
@@ -363,18 +382,18 @@ let initPackery = function () {
 
   // make the images larger if we have a mobile-sized window
   if (!isMobile()) {
-    resizeGrid(gridSizeSmall + "%");
+    resizeGrid(userSettings.get("gridSizeSmall") + "%");
   } else {
-    resizeGrid(gridSizeLarge + "%");
+    resizeGrid(userSettings.get("gridSizeLarge") + "%");
   }
 
   // Add an event listener for the resize event
   window.addEventListener('resize', function (event) {
 
     if (isMobile()) {
-      resizeGrid(gridSizeLarge + "%");
+      resizeGrid(userSettings.get("gridSizeLarge") + "%");
     } else {
-      resizeGrid(gridSizeSmall + "%");
+      resizeGrid(userSettings.get("gridSizeSmall") + "%");
     }
 
     pckry.layout();
