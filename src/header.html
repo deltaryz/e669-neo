@@ -100,17 +100,17 @@ position: relative;
         <div class="settingsCell">
             Columns (large display):
             <br />
-            <span class="px"><input type="radio" name="largeDisplayColumns"> 5</span>
-            <span class="px"><input type="radio" name="largeDisplayColumns"> 4</span>
-            <span class="px"><input type="radio" name="largeDisplayColumns"> 3</span>
+            <span class="px"><input type="radio" name="largeDisplayColumns" value="5"> 5</span>
+            <span class="px"><input type="radio" name="largeDisplayColumns" value="4" checked> 4</span>
+            <span class="px"><input type="radio" name="largeDisplayColumns" value="3"> 3</span>
             <br />
 
             <br />
             Columns (small display):
             <br />
-            <span class="px"><input type="radio" name="smallDisplayColumns"> 3</span>
-            <span class="px"><input type="radio" name="smallDisplayColumns"> 2</span>
-            <span class="px"><input type="radio" name="smallDisplayColumns"> 1</span>
+            <span class="px"><input type="radio" name="smallDisplayColumns" value="3"> 3</span>
+            <span class="px"><input type="radio" name="smallDisplayColumns" value="2" checked> 2</span>
+            <span class="px"><input type="radio" name="smallDisplayColumns" value="1"> 1</span>
             <br />
         </div>
 
@@ -124,9 +124,9 @@ position: relative;
 
             Preview Size:
             <br />
-            <input type="radio" id="imageFullSetting" name="imageSize"> Full
+            <input type="radio" name="imageSize" value="full" checked> Full
             <br />
-            <input type="radio" id="imageSampleSetting" name="imageSize"> Sample
+            <input type="radio" name="imageSize" value="sample"> Sample
         </div>
 
     </div>
@@ -136,7 +136,7 @@ position: relative;
     <br />
     <input id="derpiApiKeyInput" class="settingsInput">
 
-    <div style="padding-top: 3px;"></div>
+    <div style="padding-top: 5px;"></div>
 
     CORS Proxy URL:
     <br />

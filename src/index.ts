@@ -1,11 +1,7 @@
 // e669-neo
 // © 2023 Cameron Seid
 
-// URL of cors proxy (https://github.com/Rob--W/cors-anywhere)
-// PORT=8765 CORSANYWHERE_WHITELIST="https://e669.fun" node server.js
-// include trailing slash in URL
-let corsProxy = "http://floof.zone:8765/";
-// TODO: add setting to override cors proxy URL
+let defaultCorsProxy = "http://floof.zone:8765/";
 
 // Reads a cookie from the browser
 let readCookie = function (key: string): string | null {
@@ -30,10 +26,19 @@ let writeCookie = function (key: string, value: string) {
 
 // init user settings, reading from cookies if they exist
 let userSettings = new Map<string, string>([
+  // Results per page
   ["pageSize", readCookie('pageSize') || "30"],
-  ["gridSizeSmall", readCookie('gridSizeSmall') || "23.5"],
-  ["gridSizeLarge", readCookie('gridSizeLarge') || "49"],
+  // Grid size on small screens
+  ["gridSizeSmall", readCookie('gridSizeSmall') || "49"],
+  // Grid size on large screens
+  ["gridSizeLarge", readCookie('gridSizeLarge') || "23.5"],
+  // Allow 18+ results
   ["disableAgeRestrict", readCookie('disableAgeRestrict') || "false"],
+  // URL of cors proxy (https://github.com/Rob--W/cors-anywhere)
+  // PORT=8765 CORSANYWHERE_WHITELIST="https://e669.fun" node server.js
+  ["corsProxy", readCookie('corsProxy') || defaultCorsProxy],
+  ["previewSize", readCookie('previewSize') || "full"],
+  ["derpiApiKey", readCookie('derpiApiKey') || ""],
 ]);
 
 console.log(userSettings);
@@ -48,6 +53,7 @@ let writeSettingsToCookies = function () {
 
 // Maps the number of columns to the grid size value necessary to achieve it
 let gridSizeReference = new Map<number, string>([
+  [1, "100"],
   [2, "49"],
   [3, "32"],
   [4, "23.5"],
@@ -214,6 +220,7 @@ fetch("header.html")
 
     // show settings modal when we click this
     selectorSettings.onclick = function () {
+      // TODO: reset to defaults button
 
       // clone the settings modal to a temporary copy
       // we have to do this because mui deletes it when we close the modal
@@ -225,9 +232,16 @@ fetch("header.html")
       let pageSizeInput = settingsActive.querySelector("#pageSizeInput") as HTMLInputElement;
       let saveSettingsButton = settingsActive.querySelector("#saveSettings") as HTMLButtonElement;
       let ageRestrictSettingInput = settingsActive.querySelector("#ageRestrictSettingInput") as HTMLInputElement;
+      let corsProxyInput = settingsActive.querySelector("#corsProxyInput") as HTMLInputElement;
+      let largeDisplayButtons = Array.from(settingsActive.querySelectorAll("input[name='largeDisplayColumns']")) as HTMLInputElement[];
+      let smallDisplayButtons = Array.from(settingsActive.querySelectorAll("input[name='smallDisplayColumns']")) as HTMLInputElement[];
+      let imageSizeButtons = Array.from(settingsActive.querySelectorAll("input[name='imageSize']")) as HTMLInputElement[];
+      let derpiApiKeyInput = settingsActive.querySelector("#derpiApiKeyInput") as HTMLInputElement;
 
       // populate the inputs with the existing settings
       pageSizeInput.value = userSettings.get("pageSize") || "30";
+      corsProxyInput.value = userSettings.get("corsProxy") || defaultCorsProxy;
+      derpiApiKeyInput.value = userSettings.get("derpiApiKey") || "";
 
       let ageRestrictSetting = false;
       if (userSettings.get("disableAgeRestrict") === 'true') {
@@ -246,9 +260,45 @@ fetch("header.html")
         // TODO: check this while doing the search
         // TODO: check this against derpi's limit
 
+        // check the large display columns buttons
+        let largeDisplayValue: number = 0;
+        for (const radioButton of largeDisplayButtons) {
+          if (radioButton.checked) {
+            largeDisplayValue = parseInt(radioButton.value);
+            break;
+          }
+        }
+
+        // check the small display columns buttons
+        let smallDisplayValue: number = 0;
+        for (const radioButton of smallDisplayButtons) {
+          if (radioButton.checked) {
+            smallDisplayValue = parseInt(radioButton.value);
+            break;
+          }
+        }
+
+        // check the preview size buttons
+        let imageSizeValue: string = "full";
+        for (const radioButton of imageSizeButtons) {
+          if (radioButton.checked) {
+            imageSizeValue = radioButton.value;
+            break;
+          }
+        }
+
+        // make sure the CORS proxy URL has a slash at the end
+        let corsProxyValue = corsProxyInput.value;
+        if (!corsProxyValue.endsWith('/')) corsProxyValue += '/';
+
         // update settings object
         userSettings.set("pageSize", pageSizeValue.toString());
         userSettings.set("disableAgeRestrict", ageRestrictSettingInput.checked.toString());
+        userSettings.set("corsProxy", corsProxyValue);
+        userSettings.set("gridSizeLarge", gridSizeReference.get(largeDisplayValue) || "23.5");
+        userSettings.set("gridSizeSmall", gridSizeReference.get(smallDisplayValue) || "49");
+        userSettings.set("previewSize", imageSizeValue);
+        userSettings.set("derpiApiKey", derpiApiKeyInput.value);
 
         // write these into the cookies
         writeSettingsToCookies();
@@ -299,7 +349,7 @@ if (search != "") {
     // display the wheel as soon as we detect a search, hide it once packery is populated
 
     // send the request
-    fetch(corsProxy + url)
+    fetch(userSettings.get("corsProxy") + url)
       .then(function (response) {
         return response.json();
       })
@@ -381,7 +431,7 @@ let initPackery = function () {
   });
 
   // make the images larger if we have a mobile-sized window
-  if (!isMobile()) {
+  if (isMobile()) {
     resizeGrid(userSettings.get("gridSizeSmall") + "%");
   } else {
     resizeGrid(userSettings.get("gridSizeLarge") + "%");
@@ -390,7 +440,7 @@ let initPackery = function () {
   // Add an event listener for the resize event
   window.addEventListener('resize', function (event) {
 
-    if (isMobile()) {
+    if (!isMobile()) {
       resizeGrid(userSettings.get("gridSizeLarge") + "%");
     } else {
       resizeGrid(userSettings.get("gridSizeSmall") + "%");
