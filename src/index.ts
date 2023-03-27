@@ -24,6 +24,20 @@ let writeCookie = function (key: string, value: string) {
   document.cookie = key + "=" + value + "; expires=Fri, 31 Dec 9999 23:59:59 GMT; path=/";
 }
 
+// this generic post object allows us to interface with posts regardless of which API they came from
+class Post {
+  constructor(
+    public fileUrl: string, // direct link to file
+    public pageUrl: string, // page URL on original site
+    public previewUrl: string, // smallest preview
+    public sampleUrl: string, // middle preview
+    public hasSample: boolean, // does it have a sample? fallback to preview if not
+    public fileType: string, // file extension
+    public width: number, // width
+    public height: number, // height
+  ) { }
+}
+
 // init user settings, reading from cookies if they exist
 let userSettings = new Map<string, string>([
   // Results per page
@@ -37,7 +51,9 @@ let userSettings = new Map<string, string>([
   // URL of cors proxy (https://github.com/Rob--W/cors-anywhere)
   // PORT=8765 CORSANYWHERE_WHITELIST="https://e669.fun" node server.js
   ["corsProxy", readCookie('corsProxy') || defaultCorsProxy],
+  // will the grid show full res or preview?
   ["previewSize", readCookie('previewSize') || "full"],
+  // Derpibooru API key
   ["derpiApiKey", readCookie('derpiApiKey') || ""],
 ]);
 
@@ -93,9 +109,6 @@ let hithere: HTMLElement = document.getElementById("hithere") as HTMLElement;
 
 // results
 let resultsE621;
-
-// gonna try not to use this if i can help it
-// import * as $ from "jquery";
 
 enum API {
   E621,
@@ -358,16 +371,52 @@ if (search != "") {
 
         if (resultsE621.length < 1) showError(new Error("No results received."));
 
-        // process results into image tags
-
-        let htmlString: string = "";
+        // cycle through each result
         for (let i = 0; i < resultsE621.length; i++) {
-          let currentImage = resultsE621[i];
 
-          // TODO: handle filetypes that don't show in <img> tags
-          // TODO: user setting to display full res or preview
-          htmlString +=
-            "<img class=\"outline drophover grid-item\" src=\"" + currentImage.file.url + "\">"
+          let currentPost = new Post(
+            resultsE621[i].file.url,
+            "https://e621.net/posts/" + resultsE621[i].id,
+            resultsE621[i].preview.url,
+            resultsE621[i].sample.url,
+            resultsE621[i].sample.has,
+            resultsE621[i].file.ext,
+            resultsE621[i].file.width,
+            resultsE621[i].file.height
+          )
+
+          const imgElement = document.createElement("img");
+          imgElement.classList.add("outline", "drophover", "grid-item");
+
+          // SWFs and webms don't show in <img> tags, so we handle those separately
+          switch (currentPost.fileType) {
+            case "swf":
+            case "webm":
+              // TODO: overlay to indicate this is a webm
+              if (currentPost.hasSample) {
+                imgElement.setAttribute("src", currentPost.sampleUrl);
+              } else {
+                // SWF files will display "Flash"
+                imgElement.setAttribute("src", currentPost.previewUrl);
+              }
+              break;
+            default:
+              // check user setting for image size
+              if (userSettings.get("previewSize") == "full") {
+                imgElement.setAttribute("src", currentPost.fileUrl);
+              } else {
+                imgElement.setAttribute("src", currentPost.sampleUrl);
+              }
+              break;
+          }
+
+          // set up the post view modal
+          imgElement.onclick = function () {
+            console.log(currentPost);
+          }
+
+          // add to grid
+          imageDiv.appendChild(imgElement);
         }
 
         // prepare the page switchers
@@ -396,9 +445,6 @@ if (search != "") {
             reloadPage();
           }
         }
-
-        // shove all of the images into the grid
-        imageDiv.innerHTML = htmlString;
 
         initPackery();
 
@@ -450,7 +496,3 @@ let initPackery = function () {
   });
 
 }
-
-// TODO: create post.ts object with fields for all relevant variables
-// use this for type checking: https://jvilk.com/MakeTypes/
-
