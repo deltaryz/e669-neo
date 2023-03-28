@@ -1,7 +1,7 @@
 // e669-neo
 // © 2023 Cameron Seid
 
-let defaultCorsProxy = "http://floof.zone:8765/";
+let defaultCorsProxy = "https://cors.e669.fun/";
 
 // Reads a cookie from the browser
 let readCookie = function (key: string): string | null {
@@ -25,6 +25,7 @@ let writeCookie = function (key: string, value: string) {
 }
 
 // this generic post object allows us to interface with posts regardless of which API they came from
+// TODO: tags should be its own object (interface?) with some per-tag metadata (category, button color)
 class Post {
   constructor(
     public fileUrl: string, // direct link to file
@@ -413,11 +414,15 @@ if (search != "") {
           // set up the post view modal
           imgElement.onclick = function () {
             console.log(currentPost);
+
+            // TODO: construct the HTML elements with a method of the Post class
           }
 
           // add to grid
           imageDiv.appendChild(imgElement);
         }
+
+        // TODO: move everything below here into a generic function that can be called from the other API handlers
 
         // prepare the page switchers
         pageSwitcher.style.display = "flex";
