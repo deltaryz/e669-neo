@@ -120,8 +120,12 @@ let currentApi: API = API.E621;
 
 // reload page with new parameters
 let reloadPage = function () {
+
+  let newLocation = window.location.toString();
+  newLocation = newLocation.replace('/#', '/'); // sometimes we get a # at the end that fucks things up
+
   location.href =
-    window.location.toString().split("?")[0] +
+    newLocation.split("?")[0] +
     "?" +
     currentQuery.toString();
 }
