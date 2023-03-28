@@ -206,6 +206,7 @@ fetch("header.html")
       // enter was pressed
       if (event.keyCode == 13) {
         currentQuery.set("search", searchBox.value)
+        currentQuery.set("page", "1");
         reloadPage();
       }
     });
